@@ -1,0 +1,64 @@
+# SR_x_by_y(df, "weather", "count")
+# df <- df; x_name <- "weather"; y_name <- "count"; path_output <- ""; save <- F
+# rm(temp, x_name, y_name, path_output, save, p)
+#
+SR_x_by_y <- function(df, x_name, y_name, path_output = "", save = F) {
+  #
+  # prepare data
+  temp <- data.frame(y = df[, y_name], x = df[, x_name])
+  # temp <- na.omit(temp)
+
+  # if (length(unique(temp$x))<30) {
+  #   temp <- merge(temp, as.data.frame(table(temp[, 1], temp[, 2])/length(temp)),
+  #                 by.x = c("y","x"), by.y = c("Var1", "Var2"), all.x = T, sort = F)
+  # }
+  #
+  # plot
+  if (is.factor(temp$y)) {
+    if (is.factor(temp$x)) {      # y: factor   x: factor
+      p <- ggplot(temp, aes(x = x, y = y)) +
+        stat_bin2d(aes(fill = ..count..)) +
+        stat_bin2d(geom = "text", aes(label = ..count..)) +
+        scale_fill_gradient(low = "white", high = "blue") +
+        scale_y_discrete(limits = rev(levels(temp$y))) +
+        labs(title = x_name)
+      # SR_mosaicplot(var1 = temp$x_name, var2 = temp$y, name_x = names(x)[i])
+    } else {
+      # y: factor x: numeric
+      p <- qplot(data = temp, x = x, geom = "density", color = y) +
+        labs(title = x_name, x = x_name, colour = y_name) +
+        scale_x_continuous(breaks = pretty_breaks(5))
+    }
+  } else {
+    if (is.factor(temp$x)) {     # y: numeric   x: factor
+      p <- qplot(data = temp, y = y, x = x, geom = "jitter") +
+        labs(title = x_name, x = x_name, y = y_name) +
+        stat_summary(fun.y = "mean", fun.ymin = "mean", fun.ymax = "mean",
+                     size = 0.3, geom = "crossbar", colour = "blue") +
+        scale_y_continuous(breaks = pretty_breaks(5))
+    } else {
+      # y: numeric x: numeric
+      if (length(unique(temp$x)) < 100) {
+        p <- qplot(data = temp, y = y, x = x) +
+          geom_count() +
+          labs(title = x_name, x = x_name, y = y_name) +
+          geom_smooth(method = "loess") +
+          scale_x_continuous(breaks = pretty_breaks(5)) +
+          scale_y_continuous(breaks = pretty_breaks(5))
+      } else {
+        p <- qplot(data = temp, y = y, x = x) +
+          geom_smooth(method = "loess") +
+          labs(title = x_name, x = x_name, y = y_name) +
+          scale_x_continuous(breaks = pretty_breaks(5)) +
+          scale_y_continuous(breaks = pretty_breaks(5))
+      }
+    }
+  }
+  #
+  # save graphic
+  if (save) ggsave(paste0(path_output, x_name, " - ", y_name, ".png"),
+                   plot = p, width = 9.92, height = 5.3)
+  #
+  # return result
+  print(p)
+}
