@@ -1,8 +1,4 @@
-# SR_omit_non_regular_values
-
 # SR_select_variables_interactively
-
-# SR_search_variables
 
 # SR_memory_usage
 
