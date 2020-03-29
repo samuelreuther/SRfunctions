@@ -18,14 +18,6 @@
 
 # SR_correlation_plot
 
-# SR_end_of_month
-
-# SR_modus
-
-# SR_replace_NA_modus
-
-# SR_replace_NA_median
-
 # SR_replace_NA_RF
 
 # SR_replace_umlaute

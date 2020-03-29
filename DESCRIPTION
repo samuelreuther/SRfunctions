@@ -22,6 +22,9 @@ Imports:
     Metrics,
     rstudioapi,
     pacman,
-    methods
+    methods,
+    forcats,
+    scales,
+    lubridate
 VignetteBuilder: knitr
 RoxygenNote: 7.1.0

@@ -1,3 +1,15 @@
+#' Calculate modus
+#'
+#' calculate most frequent value in a vector
+#'
+#' @param x vector
+#'
+#' @return character
+#'
+#' @examples
+#' SR_modus(c("a", "a", "b", "c"))
+#'
+#' @export
 SR_modus <- function(x) {
   # fastest
   names(sort(table(x), decreasing = T)[1])

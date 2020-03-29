@@ -1,6 +1,7 @@
 SR_mosaicplot <- function(df, cutoff) {
   # https://stackoverflow.com/questions/50227916/adding-counts-to-ggmosaic-can-this-be-done-simpler?noredirect=1&lq=1
   #
+  library(scales)
   p <- df %>%
     mutate(y = factor(y, levels = c("0", "1")),
            pr = factor(ifelse(pr <= cutoff, 0, 1), levels = c("0", "1"))) %>%

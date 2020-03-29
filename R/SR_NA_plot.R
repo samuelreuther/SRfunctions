@@ -1,5 +1,5 @@
 SR_NA_plot <- function(df, save = F, filename = "NA_Plot.png", path_output = path_output) {
-  p_load(scales)
+  library(scales)
   # calculate NAs
   missings <- data.frame(VarName = names(df),
                          NAs = sapply(df, function(x) sum(is.na(x))),
@@ -9,7 +9,7 @@ SR_NA_plot <- function(df, save = F, filename = "NA_Plot.png", path_output = pat
   rownames(missings) <- NULL
   # plot NAs
   a <- qplot(NAs_in_p, reorder(VarName, NAs), data = missings, ylab = "Variable") +
-    scale_x_continuous(labels = percent, limits = c(0,1)) + xlab("Anteil NAs pro Variable")
+    scale_x_continuous(labels = scales::percent, limits = c(0,1)) + xlab("Anteil NAs pro Variable")
   print(a)
   if (save) {
     try(ggsave(paste0(path_output, filename), plot = a, width = 9.92, height = 5.3))
