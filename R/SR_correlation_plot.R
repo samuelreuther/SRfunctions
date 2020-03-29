@@ -1,4 +1,5 @@
-SR_correlation_plot <- function(df, plot = T, save = F, filename = "Correlation.png") {
+SR_correlation_plot <- function(df, plot = T, save = F, filename = "NA_Correlation.png",
+                                path_output = "") {
   p_load(corrplot, purrr)
   # select numeric, integer and date variables
   df2 <- df %>%

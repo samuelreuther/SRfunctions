@@ -1,4 +1,5 @@
-SR_NA_plot <- function(df, save = F) {
+SR_NA_plot <- function(df, save = F, filename = "NA_Plot.png", path_output = path_output) {
+  p_load(scales)
   # calculate NAs
   missings <- data.frame(VarName = names(df),
                          NAs = sapply(df, function(x) sum(is.na(x))),
@@ -10,6 +11,9 @@ SR_NA_plot <- function(df, save = F) {
   a <- qplot(NAs_in_p, reorder(VarName, NAs), data = missings, ylab = "Variable") +
     scale_x_continuous(labels = percent, limits = c(0,1)) + xlab("Anteil NAs pro Variable")
   print(a)
+  if (save) {
+    try(ggsave(paste0(path_output, filename), plot = a, width = 9.92, height = 5.3))
+  }
   print(paste0("Proportion NAs in df: ", sum(is.na(df)) / (ncol(df)*nrow(df))))
   print(missings)  # [1:min(which(missings$NAs_in_p == 0)) - 1, ]
   # plot correlation of NAs
@@ -17,7 +21,9 @@ SR_NA_plot <- function(df, save = F) {
     na_dummy <- df %>% select(one_of(as.character(missings$VarName)))
     # na_dummy <- data.frame()
     for (i in as.character(missings$VarName)) na_dummy[, i] <- ifelse(is.na(df[, i]), 1, 0)
-    SR_correlation_plot(na_dummy, save = save, filename = "NA-Plot Correlation.png")
+    SR_correlation_plot(na_dummy, save = save,
+                        filename = paste0(gsub(".png", "", filename), "_Correlation.png"),
+                        path_output = path_output)
   }
   # p_load(VIM)
   # aggr_plot <- aggr(df[sample(10000),], col = c('navyblue','red'), numbers = T,
@@ -25,7 +31,4 @@ SR_NA_plot <- function(df, save = F) {
   #                   ylab = c("Frequency of missings","Pattern"))
   # marginplot(df[sample(10000), c(1,2)]) # Check if MCAR (missing completely at random)
   #
-  if (save) {
-    try(ggsave(paste0(path_output, "NA-Plot.png"), plot = a, width = 9.92, height = 5.3))
-  }
 }
