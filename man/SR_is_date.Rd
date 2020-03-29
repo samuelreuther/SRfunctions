@@ -13,7 +13,7 @@ SR_is_date(x)
 Boolean value TRUE or FALSE
 }
 \description{
-because missing function is.Date in base R
+because function is.Date() is missing in base R
 }
 \examples{
 SR_is_date(Sys.Date())

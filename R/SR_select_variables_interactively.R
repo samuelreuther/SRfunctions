@@ -2,7 +2,7 @@
 #
 SR_select_variables_interactively <- function(df, n = 100) {
   # load some libraries
-  p_load(shiny, miniUI, dplyr, DT)
+  p_load(shiny, miniUI, dplyr, DT, rstudioapi)
   #
   # return_dplyr_code <- match.arg(return_dplyr_code)
   stopifnot(is.data.frame(df))

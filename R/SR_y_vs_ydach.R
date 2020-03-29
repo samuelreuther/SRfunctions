@@ -1,4 +1,5 @@
 SR_y_vs_ydach <- function(obs, pr, save = F, file_name = NULL){
+  p_load(Metrics)
   df <- data.frame(y = obs[], pr = pr[])
   p <- ggplot(df, aes(x = y, y = pr)) +
     geom_point() +

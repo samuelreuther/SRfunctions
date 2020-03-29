@@ -18,6 +18,10 @@ Suggests:
 Language: en-US
 Imports: 
     dplyr,
-    ggplot2
+    ggplot2,
+    Metrics,
+    rstudioapi,
+    pacman,
+    methods
 VignetteBuilder: knitr
 RoxygenNote: 7.1.0

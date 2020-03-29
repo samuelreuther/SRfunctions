@@ -1,6 +1,23 @@
+#' Join-Check
+#'
+#' Check the number of rows after different joining methods of two data.frames.
+#' The joins will be done by all matching columns (identical names in both data.frames).
+#'
+#' @param LHS data.frame
+#' @param RHS data.frame
+#'
+#' @return None, results will be printed
+#'
+#' @examples
+#' SR_join_check(data.frame(a = 1:3),
+#'               data.frame(a = c(3, 3:5)))
+#'
+#' @export
 SR_join_check <- function(LHS = NULL, RHS = NULL) {
   # exit if error
   if (is.null(LHS) | is.null(RHS)) break()
+  #
+  library(dplyr)
   #
   # # identical column names
   col <- names(LHS)[names(LHS) %in% names(RHS)]

@@ -1,3 +1,19 @@
+#' Search variable(s) in a data.frame
+#'
+#' Finds matching and partial matching variables and prints a summary of it/them.
+#'
+#' @param df data.frame
+#' @param var string
+#'
+#' @return Null.
+#'
+#' @example
+#' SR_search_variables(df = data.frame(CUSTOMER_ID = 1001:1010,
+#'                                     CUSTOMER_NAME = LETTERS[1:10],
+#'                                     ADRESSE_ID = 1:10),
+#'                     var = "id")
+#'
+#' @export
 SR_search_variables <- function(df, var) {
   # search all matching variables in data.frame
   var_names <- names(df)[grepl(var, names(df))]
@@ -40,4 +56,5 @@ SR_search_variables <- function(df, var) {
   } else {
     print("No variable found.")
   }
+  return(NULL)
 }
