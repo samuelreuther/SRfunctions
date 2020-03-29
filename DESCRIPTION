@@ -22,7 +22,6 @@ Imports:
     Metrics,
     rstudioapi,
     pacman,
-    methods,
-    pacman
+    methods
 VignetteBuilder: knitr
 RoxygenNote: 7.1.0
