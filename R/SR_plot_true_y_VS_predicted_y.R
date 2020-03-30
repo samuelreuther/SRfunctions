@@ -11,14 +11,15 @@
 #'
 #' @examples
 #' data("mtcars")
-SR_plot_true_y_VS_predicted_y(true_y = mtcars$hp,
-                              predicted_y = mtcars$hp +
-                                rnorm(nrow(mtcars), sd = 30))
+#' SR_plot_true_y_VS_predicted_y(true_y = mtcars$hp,
+#'                               predicted_y = mtcars$hp +
+#'                                 rnorm(nrow(mtcars), sd = 30))
 #'
 #' @export
 SR_plot_true_y_VS_predicted_y <- function(true_y, predicted_y,
                                           path_output = path_output, save = F){
-  p_load(Metrics)
+  library(tidyverse)
+  library(Metrics)
   df <- data.frame(y = true_y[], pr = predicted_y[])
   p <- ggplot(df, aes(x = y, y = pr)) +
     geom_point() +
