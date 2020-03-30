@@ -1,18 +1,4 @@
-# SR_select_variables_interactively
-
-# SR_memory_usage
-
-# SR_code_search
-
-# SR_barplot_variables
-
-# SR_x_by_y
-
-# SR_univariate_analysis
-
 # SR_mosaicplot
-
-# SR_y_vs_ydach
 
 # SR_NA_plot
 
@@ -31,8 +17,6 @@
 # SR_feat_eng_factors
 
 # SR_feat_eng_numeric
-
-# SR_join_check
 
 # SR_backup_files
 

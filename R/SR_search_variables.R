@@ -49,12 +49,12 @@ SR_search_variables <- function(df, var) {
     cat("\n")
     # head and tail of variables
     cat("Head and tail of variable(s): "); cat("\n")
-    rbind(df %>% select(one_of(var_names)) %>% head(5),
-          df %>% select(one_of(var_names)) %>% tail(5))
+    print(rbind(df %>% select(one_of(var_names)) %>% head(5),
+                df %>% select(one_of(var_names)) %>% tail(5)))
     # missings
     # print(xx_temp %>% summarise_all(is.na)); print(" ")
   } else {
     print("No variable found.")
   }
-  return(NULL)
+  return(invisible(NULL))
 }
