@@ -2,24 +2,18 @@
 % Please edit documentation in R/SR_mosaicplot.R
 \name{SR_mosaicplot}
 \alias{SR_mosaicplot}
-\title{Mosaic plot (true y vs. predicted y)}
+\title{Mosaic plot}
 \usage{
-SR_mosaicplot(df, cutoff = 0.5)
+SR_mosaicplot(var1, var2)
 }
 \arguments{
-\item{df}{data.frame with columns "y_true" and "predicted_y"}
+\item{var1}{factor variable}
 
-\item{cutoff}{numeric (default = 0.5): cutoff value for predicted_y to count as "1"}
+\item{var2}{factor variable}
 }
 \value{
 ggplot-graphic
 }
 \description{
-Plot a frequency count for a binary confusion matrix (true y vs. predicted y).
-}
-\examples{
-SR_mosaicplot(df = data.frame(y_true = c(0, 0, 0, 1, 1, 1),
-                              predicted_y = c(0.8, 0.1, 0.4, 0.2, 0.9, 0.8)),
-              cutoff = 0.5)
-
+Plot a frequency count for example a confusion matrix (true y vs. predicted y).
 }

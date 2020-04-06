@@ -1,5 +1,7 @@
-SR_feat_eng_date <- function(df, only_date_to_numeric = T) {
-  library(lubridate) # for week
+SR_feat_eng_date <- function(df, only_date_to_numeric = TRUE) {
+  # load some libraries
+  suppressMessages(library(lubridate)) # for week
+  #
   for (i in 1:ncol(df)) {
     if (SR_is_date(df[, i])) {
       j <- names(df)[i]
@@ -7,7 +9,7 @@ SR_feat_eng_date <- function(df, only_date_to_numeric = T) {
         # df[, paste0(j, "_year")] <- year(df[, j])
         df[, paste0(j, "_month")] <- lubridate::month(df[, j])
         df[, paste0(j, "_day")] <- as.numeric(format(df[, j], format = "%d"))
-        df[, paste0(j, "_weekday")] <- as.factor(weekdays(df[, j], abbreviate = F))
+        df[, paste0(j, "_weekday")] <- as.factor(weekdays(df[, j], abbreviate = FALSE))
         # df[, paste0(j, "_year_month")] <- lubridate::month(df[, j]) + lubridate::year(df[, j]) * 100
         # as.factor(paste0(df[, paste0(j, "_year")], "_",
         #                  df[, paste0(j, "_month")]))

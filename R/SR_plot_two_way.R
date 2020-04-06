@@ -2,7 +2,7 @@
 #
 # source: https://www.kaggle.com/peatle/eda-investigating-trends/notebook
 #
-SR_plot_two_way <- function(df, line, bars = NULL, factor1, factor2, rescale = F){
+SR_plot_two_way <- function(df, line, bars = NULL, factor1, factor2, rescale = FALSE){
   ## If bars not given, do count
   if (is.null(bars)) {
     bars <- "Count"

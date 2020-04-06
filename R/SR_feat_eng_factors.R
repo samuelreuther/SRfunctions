@@ -1,14 +1,14 @@
 SR_feat_eng_factors <- function(df,
-                                order_weekday_month = T,
-                                make_na_explicit = F,
-                                replace_na_by_modus = F,
-                                label_encoding = F,
-                                count_encoding = F,
-                                rank_encoding = F,
-                                # weighted_effect_coding = F,
-                                target_encoding = F,
-                                polynomial_encoding = F,
-                                combine_rare_levels = F, prop = NULL,
+                                order_weekday_month = TRUE,
+                                make_na_explicit = FALSE,
+                                replace_na_by_modus = FALSE,
+                                label_encoding = FALSE,
+                                count_encoding = FALSE,
+                                rank_encoding = FALSE,
+                                # weighted_effect_coding = FALSE,
+                                target_encoding = FALSE,
+                                polynomial_encoding = FALSE,
+                                combine_rare_levels = FALSE, prop = NULL,
                                 folds_index = NULL,
                                 use_other_df = NULL) {
   #
@@ -155,7 +155,7 @@ SR_feat_eng_factors <- function(df,
       # => out of fold !!!
       # if (weighted_effect_coding) {
       #   p_load(wec)
-      #   omitted <- names(sort(table(df[, var]), decreasing = T)[1])
+      #   omitted <- names(sort(table(df[, var]), decreasing = TRUE)[1])
       #   temp <- contr.wec(df[, var], omitted = omitted)
       #   for (k in 1:ncol(temp)) {
       #     df[df[, i] == temp$df...i.[k], paste0(i, "_wec")] <- temp$rank[k]  # TODO

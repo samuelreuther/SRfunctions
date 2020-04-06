@@ -4,7 +4,7 @@
 \alias{SR_plot_y_by_x}
 \title{Plot y by x}
 \usage{
-SR_plot_y_by_x(df, x_name, y_name, path_output = path_output, save = F)
+SR_plot_y_by_x(df, x_name, y_name, path_output = path_output, save = FALSE)
 }
 \arguments{
 \item{df}{data.frame}

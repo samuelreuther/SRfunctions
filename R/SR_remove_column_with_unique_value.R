@@ -20,11 +20,11 @@
 #'                                                    character = c("a", "b", NA, "d", NA, "f"),
 #'                                                    integer = c(0L, NA, NA, NA, NA, NA),
 #'                                                    remove = c(1, 1, 1, 1, 1, 1)),
-#'                                    remove_na = T)
+#'                                    remove_na = TRUE)
 #'
 #' @export
 SR_remove_column_with_unique_value <- function(df,
-                                               remove_na = F, silent = F) {
+                                               remove_na = FALSE, silent = FALSE) {
   # load some libraries
   suppressMessages(library(dplyr))
   #

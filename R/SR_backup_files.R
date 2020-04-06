@@ -15,19 +15,19 @@ SR_backup_files <- function(path_from, path_to, exclude = NULL, include = NULL) 
   new_files <- list()
   #
   # list of existing files
-  files_from <- list.files(path = path_from, full.names = T, recursive = T,
-                           all.files = T, no.. = T)
-  # files_from <- list.files(path = path_from, full.names = T, recursive = T)
+  files_from <- list.files(path = path_from, full.names = TRUE, recursive = TRUE,
+                           all.files = TRUE, no.. = TRUE)
+  # files_from <- list.files(path = path_from, full.names = TRUE, recursive = TRUE)
   #
   # clean up name if "invalid multibyte string"
   for (i in seq_along(files_from)) {
-    e <- try(nchar(files_from[i]), silent = T)
+    e <- try(nchar(files_from[i]), silent = TRUE)
     if (is(e, "try-error")) {
       p_load(stringi)
       files_from[i] <- files_from[i] %>%
         stri_enc_toutf8(.) %>%
         stri_unescape_unicode(.) %>%
-        gsub("�", "X", ., fixed = T)
+        gsub("�", "X", ., fixed = TRUE)
     }
     rm(e)
   }; rm(i)
@@ -35,7 +35,7 @@ SR_backup_files <- function(path_from, path_to, exclude = NULL, include = NULL) 
   # exclude files
   if (!is.null(exclude)) {
     for (i in seq_along(exclude)) {
-      files_from <- files_from[!grepl(exclude[i], files_from, fixed = T)]
+      files_from <- files_from[!grepl(exclude[i], files_from, fixed = TRUE)]
     }
   }
   #
@@ -77,10 +77,10 @@ SR_backup_files <- function(path_from, path_to, exclude = NULL, include = NULL) 
     if (!file.exists(filename_to)) {
       # create dir if necessary
       if (!dir.exists(dirname(filename_to))) {
-        dir.create(dirname(filename_to), recursive = T)
+        dir.create(dirname(filename_to), recursive = TRUE)
       }
       # copy file
-      file.copy(filename_from, filename_to, copy.date = T)
+      file.copy(filename_from, filename_to, copy.date = TRUE)
       new <- new + 1
       new_files <- c(new_files, filename_to)
     } else {
@@ -89,7 +89,7 @@ SR_backup_files <- function(path_from, path_to, exclude = NULL, include = NULL) 
       file_info_to <- file.info(filename_to)
       # if mtime_from > mtime_to then overwrite existing file
       if (file_info_from$mtime > file_info_to$mtime + 1) {
-        file.copy(filename_from, filename_to, overwrite = T, copy.date = T)
+        file.copy(filename_from, filename_to, overwrite = TRUE, copy.date = TRUE)
         update <- update + 1
         updated_files <- c(updated_files, filename_to)
       } else {
@@ -118,7 +118,7 @@ SR_backup_files <- function(path_from, path_to, exclude = NULL, include = NULL) 
 # New function
 #
 # list.files of path_from and path_to
-# New file: T if file exists in path_to
+# New file: TRUE if file exists in path_to
 # Move file: if file exists in another path_to
 # Check for double files
 # update: get date from path_to if file exists first and update if newer date
@@ -131,11 +131,11 @@ SR_backup_files <- function(path_from, path_to, exclude = NULL, include = NULL) 
 #   start_time <- Sys.time()
 #   #
 #   # list of existing files_from
-#   files_from <- list.files(path = path_from, full.names = T, recursive = T)
+#   files_from <- list.files(path = path_from, full.names = TRUE, recursive = TRUE)
 #   # exclude files
 #   if (!is.null(exclude)) {
 #     for (i in seq_along(exclude)) {
-#       files_from <- files_from[!grepl(exclude[i], files_from, fixed = T)]
+#       files_from <- files_from[!grepl(exclude[i], files_from, fixed = TRUE)]
 #     }
 #   }
 #   # include files
@@ -146,11 +146,11 @@ SR_backup_files <- function(path_from, path_to, exclude = NULL, include = NULL) 
 #   }
 #   #
 #   # list of existing files_to
-#   files_to <- list.files(path = path_to, full.names = T, recursive = T)
+#   files_to <- list.files(path = path_to, full.names = TRUE, recursive = TRUE)
 #   # exclude files
 #   if (!is.null(exclude)) {
 #     for (i in seq_along(exclude)) {
-#       files_to <- files_to[!grepl(exclude[i], files_to, fixed = T)]
+#       files_to <- files_to[!grepl(exclude[i], files_to, fixed = TRUE)]
 #     }
 #   }
 #   # include files

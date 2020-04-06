@@ -12,7 +12,7 @@
 #' @export
 SR_modus <- function(x) {
   # fastest
-  names(sort(table(x), decreasing = T)[1])
+  names(sort(table(x), decreasing = TRUE)[1])
   #
   # Alternative 1
   # names(which.max(table(x)))

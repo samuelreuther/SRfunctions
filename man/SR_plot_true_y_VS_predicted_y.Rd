@@ -8,7 +8,7 @@ SR_plot_true_y_VS_predicted_y(
   true_y,
   predicted_y,
   path_output = NULL,
-  save = F
+  save = FALSE
 )
 }
 \arguments{

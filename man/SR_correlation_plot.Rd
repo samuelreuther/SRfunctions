@@ -6,7 +6,7 @@
 \usage{
 SR_correlation_plot(
   df,
-  save = F,
+  save = FALSE,
   filename = "NA_Correlation.png",
   path_output = NULL
 )

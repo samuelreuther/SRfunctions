@@ -1,9 +1,9 @@
 SR_feat_eng_numeric <- function(df,
-                                trim_outliers = F,
-                                replace_NA_special_value = F,
-                                replace_NA_median = F,
-                                log_scale_p1 = F,
-                                interactions = F,
+                                trim_outliers = FALSE,
+                                replace_NA_special_value = FALSE,
+                                replace_NA_median = FALSE,
+                                log_scale_p1 = FALSE,
+                                interactions = FALSE,
                                 folds_index = NULL,
                                 exception = NULL,
                                 use_other_df = NULL) {
@@ -17,8 +17,8 @@ SR_feat_eng_numeric <- function(df,
       if (trim_outliers & !grepl("_LabelEnc", j)) {
         limit = 5
         if (is.null(use_other_df)) use_other_df <- df
-        mean <- mean(use_other_df[, j] %>% inf.omit(), na.rm = T)
-        sd <- sd(use_other_df[, j] %>% inf.omit(), na.rm = T)
+        mean <- mean(use_other_df[, j] %>% inf.omit(), na.rm = TRUE)
+        sd <- sd(use_other_df[, j] %>% inf.omit(), na.rm = TRUE)
         if (!mean %in% c(Inf, NA, NaN) & !sd %in% c(Inf, NA, NaN)) {
           df[!is.na(df[, j]) & df[, j] > mean + limit * sd, j] <- mean + limit * sd
           df[!is.na(df[, j]) & df[, j] < mean - limit * sd, j] <- mean - limit * sd
@@ -27,14 +27,14 @@ SR_feat_eng_numeric <- function(df,
       #
       # replace_NA_special_value
       if (replace_NA_special_value & sum(is.na(df[, i])) > 0) {
-        if (min(df[, j], na.rm = T) >= 0) {
+        if (min(df[, j], na.rm = TRUE) >= 0) {
           df[is.na(df[, j]), j] <- -1
         } else {
-          if ((max(df[, j], na.rm = T) <= 0)) {
+          if ((max(df[, j], na.rm = TRUE) <= 0)) {
             df[is.na(df[, j]), j] <- 1
           } else {
             df[is.na(df[, j]), j] <- as.numeric(paste0(replicate(
-              nchar(floor(max(df[, j], na.rm = T))) + 1, 9), collapse = ""))
+              nchar(floor(max(df[, j], na.rm = TRUE))) + 1, 9), collapse = ""))
           }
         }
       }
@@ -42,7 +42,7 @@ SR_feat_eng_numeric <- function(df,
       # replace_NA_median
       # => out of fold !!!     # TODO !!!
       if (replace_NA_median & sum(is.na(df[, i])) > 0) {
-        # df[is.na(df[, j]), j] <- median(df[, j], na.rm = T)
+        # df[is.na(df[, j]), j] <- median(df[, j], na.rm = TRUE)
         df <- SR_replace_NA_median(df, var = j, use_other_df = use_other_df)
       }
       #

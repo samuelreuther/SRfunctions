@@ -4,7 +4,7 @@
 \alias{SR_univariate_analysis}
 \title{Calculate univarate analysis}
 \usage{
-SR_univariate_analysis(df, y_name, path_output = path_output, save = T)
+SR_univariate_analysis(df, y_name, path_output = path_output, save = TRUE)
 }
 \arguments{
 \item{df}{data.frame}

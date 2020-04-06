@@ -14,10 +14,11 @@
 #'
 #' @export
 SR_join_check <- function(LHS = NULL, RHS = NULL) {
-  # exit if error
-  if (is.null(LHS) | is.null(RHS)) break()
+  # load some libraries
+  suppressMessages(library(dplyr))
   #
-  library(dplyr)
+  # exit if error
+  if (is.null(LHS) | is.null(RHS)) return(invisible(NULL))
   #
   # # identical column names
   col <- names(LHS)[names(LHS) %in% names(RHS)]

@@ -14,14 +14,15 @@
 #' SR_univariate_analysis(mtcars %>%
 #'                          select(hp, cyl, mpg) %>%
 #'                          mutate(cyl = as.factor(cyl)),
-#'                        y_name = "mpg", save = F)
+#'                        y_name = "mpg", save = FALSE)
 #'
 #' @export
 SR_univariate_analysis <- function(df, y_name,
-                                   path_output = path_output, save = T) {
-  library(SRfunctions)
-  library(tidyverse)
-  library(scales)
+                                   path_output = path_output, save = TRUE) {
+  # load some libraries
+  suppressMessages(library(dplyr))
+  suppressMessages(library(ggplot2))
+  suppressMessages(library(scales))
   #
   # Check if y is in df
   if (!y_name %in% colnames(df)) {
@@ -31,14 +32,14 @@ SR_univariate_analysis <- function(df, y_name,
   #
   # Check and maybe create output folder
   if (save) ifelse(!dir.exists(paste0(path_output,"/Univariate")),
-                   dir.create(paste0(path_output,"/Univariate")), F)
+                   dir.create(paste0(path_output,"/Univariate")), FALSE)
   #
   # Sample if df has more than 10000 rows
   if (nrow(df) > 10000) {
     set.seed(1)
-    y_temp <- df %>% select(one_of(y_name)) %>% sample_n(10000, replace = F) %>% data.frame()
+    y_temp <- df %>% select(one_of(y_name)) %>% sample_n(10000, replace = FALSE) %>% data.frame()
     set.seed(1)
-    df <- df %>% select(-one_of(y_name)) %>% sample_n(10000, replace = F) %>% data.frame()
+    df <- df %>% select(-one_of(y_name)) %>% sample_n(10000, replace = FALSE) %>% data.frame()
   } else {
     y_temp <- df %>% select(one_of(y_name)) %>% data.frame()
     df <- df %>% select(-one_of(y_name)) %>% data.frame()
@@ -63,7 +64,7 @@ SR_univariate_analysis <- function(df, y_name,
     #
     # prepare data
     temp <- data.frame(y = y_temp[, 1], x = df[, i])
-    temp <- SR_feat_eng_factors(temp, make_na_explicit = T)
+    temp <- SR_feat_eng_factors(temp, make_na_explicit = TRUE)
     temp <- na.omit(temp)
     # check if x = as.numeric(date)
     if (sum(is.na(as.Date(as.character(temp$x), format = "%Y%m%d"))) == 0) {
@@ -85,7 +86,7 @@ SR_univariate_analysis <- function(df, y_name,
     if (length(unique(temp$x)) < 30) {
       temp <- merge(temp,
                     as.data.frame(table(temp[, 1], temp[, 2])/nrow(temp)),
-                    by.x = c("y","x"), by.y = c("Var1", "Var2"), all.x = T, sort = F)
+                    by.x = c("y","x"), by.y = c("Var1", "Var2"), all.x = TRUE, sort = FALSE)
     }
     significance$Var[i] <- paste0(i, ".) ", names(df)[i])
     #
@@ -96,15 +97,16 @@ SR_univariate_analysis <- function(df, y_name,
         # calculate significance ANOVA
         significance$P_Value[i] <-
           round(chisq.test(temp$x, y = temp$y, p = rep(1/length(temp), length(temp$x)),
-                           simulate.p.value = T, B = 100)[[3]], rounding)
+                           simulate.p.value = TRUE, B = 100)[[3]], rounding)
         # noch ändern!!!
-        p <- SR_mosaicplot(var1 = temp$x, var2 = temp$y, name_x = names(df)[i])
+        p <- SR_mosaicplot(var1 = temp$x, var2 = temp$y)
+        # p <- SR_mosaicplot(var1 = temp$x, var2 = temp$y, name_x = names(df)[i])
         # qplot(data = temp, y = y, x = x, colour = y, geom = "jitter",
         #       main = paste0(i, ".) ", colnames(temp)[i], " (p-Wert=",
         #                   format(significance$P_Value[i], nsmall = 3), ")"),
         #       xlab = colnames(df)[i])
         # ggplot(temp, aes(x = x, y = y)) + geom_smooth()
-        # print(SR_mosaicplot(x~y, data = temp, color = T))
+        # print(SR_mosaicplot(x~y, data = temp, color = TRUE))
       } else {
         # y: factor   x: numeric
         # calculate significance ANOVA
@@ -136,7 +138,7 @@ SR_univariate_analysis <- function(df, y_name,
           round(summary(aov(temp$y ~ temp$x))[[1]][["Pr(>F)"]][[1]], rounding)
         # calculate bins for x
         binned <- temp %>%
-          mutate(Group = cut(x, breaks = pretty(x, 40), include.lowest = T)) %>%
+          mutate(Group = cut(x, breaks = pretty(x, 40), include.lowest = TRUE)) %>%
           group_by(Group) %>%
           summarise(y = mean(y),
                     x = median(x),
@@ -182,7 +184,7 @@ SR_univariate_analysis <- function(df, y_name,
            plot = q, width = 9.92, height = 5.3)  # 4.67
     write.table(significance,
                 file = paste0(path_output, "/Univariate/0. All Variables.csv"),
-                row.names = F, col.names = T, append = F, sep = ";", dec = ",")
+                row.names = FALSE, col.names = TRUE, append = FALSE, sep = ";", dec = ",")
   }
   #
   return(invisible(NULL))

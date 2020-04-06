@@ -13,7 +13,7 @@ test_that("class, silent", {
                     character = c("a", "b", NA, "d", NA, "f"),
                     integer = c(0L, NA, NA, NA, NA, NA),
                     remove = c(1, 1, 1, 1, 1, 1)),
-    silent = T)),
+    silent = TRUE)),
     "data.frame")
 })
 
@@ -26,12 +26,12 @@ test_that("ncol, remove 1 column", {
     3)
 })
 
-test_that("ncol, remove_na = T", {
+test_that("ncol, remove_na = TRUE", {
   expect_equal(ncol(SR_remove_column_with_unique_value(
     df = data.frame(numeric = c(0, NA, 0.3, 0.5, NA, 1),
                     character = c("a", "b", NA, "d", NA, "f"),
                     integer = c(0L, NA, NA, NA, NA, NA),
                     remove = c(1, 1, 1, 1, 1, 1)),
-    remove_na = T)),
+    remove_na = TRUE)),
     2)
 })

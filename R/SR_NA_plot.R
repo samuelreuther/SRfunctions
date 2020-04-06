@@ -16,7 +16,7 @@
 #'
 #' @export
 SR_NA_plot <- function(df,
-                       save = F, filename = "NA_Plot.png", path_output = path_output) {
+                       save = FALSE, filename = "NA_Plot.png", path_output = path_output) {
   # load some libraries
   suppressMessages(library(dplyr))
   suppressMessages(library(ggplot2))
@@ -49,8 +49,8 @@ SR_NA_plot <- function(df,
                         path_output = path_output)
   }
   # p_load(VIM)
-  # aggr_plot <- aggr(df[sample(10000),], col = c('navyblue','red'), numbers = T,
-  #                   sortVars = T, labels = names(data), cex.axis = .7, gap = 3,
+  # aggr_plot <- aggr(df[sample(10000),], col = c('navyblue','red'), numbers = TRUE,
+  #                   sortVars = TRUE, labels = names(data), cex.axis = .7, gap = 3,
   #                   ylab = c("Frequency of missings","Pattern"))
   # marginplot(df[sample(10000), c(1,2)]) # Check if MCAR (missing completely at random)
   #

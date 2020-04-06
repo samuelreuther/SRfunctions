@@ -15,7 +15,7 @@
 #'
 #' @export
 SR_correlation_plot <- function(df,
-                                save = F, filename = "NA_Correlation.png",
+                                save = FALSE, filename = "NA_Correlation.png",
                                 path_output = NULL) {
   # load some libraries
   suppressMessages(library(dplyr))
@@ -34,7 +34,7 @@ SR_correlation_plot <- function(df,
   rm(df2)
   #
   # remove variables without variation
-  df <- SR_remove_column_with_unique_value(df, remove_na = T, silent = T)
+  df <- SR_remove_column_with_unique_value(df, remove_na = TRUE, silent = TRUE)
   #
   # calculate correlation
   cor_matrix <- cor(df, use = "pairwise.complete.obs")
@@ -45,19 +45,19 @@ SR_correlation_plot <- function(df,
     png(filename = paste0(path_output, filename), height = 1000, width = 1000)
     if (sum(is.na(cor_matrix)) > 0) {
       corrplot(cor_matrix, method = "number",
-               type = "lower", diag = F, na.label = "-")
+               type = "lower", diag = FALSE, na.label = "-")
     } else {
       corrplot(cor_matrix, method = "number", order = "hclust", hclust.method = "ward.D2",
-               type = "lower", diag = F, na.label = "-")
+               type = "lower", diag = FALSE, na.label = "-")
     }
-    try(dev.off(), T)
+    try(dev.off(), TRUE)
   } else {
     if (sum(is.na(cor_matrix)) > 0) {
       corrplot(cor_matrix, method = "number",
-               type = "lower", diag = F, na.label = "-")
+               type = "lower", diag = FALSE, na.label = "-")
     } else {
       corrplot(cor_matrix, method = "number", order = "hclust", hclust.method = "ward.D2",
-               type = "lower", diag = F, na.label = "-")
+               type = "lower", diag = FALSE, na.label = "-")
     }
     # corrplot.mixed(cor_matrix)
     assign("cor_matrix", cor_matrix, envir = .GlobalEnv)

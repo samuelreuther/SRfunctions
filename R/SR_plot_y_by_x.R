@@ -19,9 +19,11 @@
 #'
 #' @export
 SR_plot_y_by_x <- function(df, x_name, y_name,
-                           path_output = path_output, save = F) {
-  library(tidyverse)
-  library(scales)
+                           path_output = path_output, save = FALSE) {
+  # load some libraries
+  suppressMessages(library(dplyr))
+  suppressMessages(library(ggplot2))
+  suppressMessages(library(scales))
   #
   # prepare data
   temp <- data.frame(y = df[, y_name], x = df[, x_name]) %>%
@@ -30,7 +32,7 @@ SR_plot_y_by_x <- function(df, x_name, y_name,
   #
   # if (length(unique(temp$x))<30) {
   #   temp <- merge(temp, as.data.frame(table(temp[, 1], temp[, 2])/length(temp)),
-  #                 by.x = c("y","x"), by.y = c("Var1", "Var2"), all.x = T, sort = F)
+  #                 by.x = c("y","x"), by.y = c("Var1", "Var2"), all.x = TRUE, sort = FALSE)
   # }
   #
   # plot
@@ -42,7 +44,7 @@ SR_plot_y_by_x <- function(df, x_name, y_name,
         scale_fill_gradient(low = "white", high = "blue") +
         scale_y_discrete(limits = rev(levels(temp$y))) +
         labs(title = x_name)
-      # SR_mosaicplot(var1 = temp$x_name, var2 = temp$y, name_x = names(x)[i])
+      # SR_mosaicplot(var1 = temp$x_name, var2 = temp$y)
     } else {
       # y: factor x: numeric
       p <- qplot(data = temp, x = x, geom = "density", color = y) +

@@ -2,7 +2,7 @@
 #'
 #' by adding a month, then subtract a day
 #'
-#' @param x date
+#' @param date date
 #'
 #' @return date
 #'

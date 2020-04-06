@@ -13,7 +13,7 @@ SR_select_variables_interactively <- function(df, n = 100) {
 
   server <- function(input, output, session){
     options(DT.options = list(pageLength = 10))
-    output$selection_df <- renderDataTable(df_head, server = F, selection = list(target = "column"))
+    output$selection_df <- renderDataTable(df_head, server = FALSE, selection = list(target = "column"))
     observeEvent(input$done, stopApp(input$selection_df_columns_selected))
   }
   #

@@ -31,13 +31,13 @@ SR_omit_non_regular_values <- function(x){
     x.num <- as.matrix(x[, sapply(x, is.numeric)])
     ri <- (!apply(x.num, MARGIN = 1, function(x) sum(is.infinite(x)) > 0) &
              !apply(x, MARGIN = 1, function(x) sum(is.na(x)) > 0))
-    x <- x[ri, , drop = F]
+    x <- x[ri, , drop = FALSE]
     ## class omit is incompatible with class data.frame
     ## attributes(x) <- c(attributes(x),list(na.action = which(!ri), class = "omit"))
   } else if (is.matrix(x)) {
     if (is.numeric(x)) {
       ri <- !apply(x, MARGIN = 1, function(x) {sum(is.na(x) | is.infinite(x)) > 0})
-      x <- x[ri,,drop = F]
+      x <- x[ri,,drop = FALSE]
       # attributes(x) <- c(attributes(x), list(na.action = which(!ri), class = "omit"))
     } else x <- na.omit(x)
   } else {

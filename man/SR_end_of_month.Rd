@@ -7,7 +7,7 @@
 SR_end_of_month(date)
 }
 \arguments{
-\item{x}{date}
+\item{date}{date}
 }
 \value{
 date

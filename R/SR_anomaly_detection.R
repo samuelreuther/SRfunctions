@@ -5,12 +5,12 @@ SR_anomaly_detection <- function() {
   # p_load(h2o)
   # localH2O <- h2o.init(max_mem_size = "10g", nthreads = -1)
   # train <- as.h2o(df[, 2:12], destination_frame = "train.hex")
-  # model <- h2o.deeplearning(x = names(train), training_frame = train, autoencoder = T,
-  #                           reproducible = T, seed = 1234, hidden = c(10, 10), epochs = 10)
-  # h2o.shutdown(prompt = F)
+  # model <- h2o.deeplearning(x = names(train), training_frame = train, autoencoder = TRUE,
+  #                           reproducible = TRUE, seed = 1234, hidden = c(10, 10), epochs = 10)
+  # h2o.shutdown(prompt = FALSE)
   # # interesting per feature error scores
-  # anom_per_feature <- as.data.frame(h2o.anomaly(model, train, per_feature = T))
-  # anom <- as.data.frame(h2o.anomaly(model, train, per_feature = F))
+  # anom_per_feature <- as.data.frame(h2o.anomaly(model, train, per_feature = TRUE))
+  # anom <- as.data.frame(h2o.anomaly(model, train, per_feature = FALSE))
   # anomalies <- cbind(anom, anom_per_feature)
   # rm(anom, anom_per_feature)
   # anomalies <- anomalies[order(-anomalies$Reconstruction.MSE), ]; View(anomalies)
@@ -27,8 +27,8 @@ SR_anomaly_detection <- function() {
   #
   # ## Run unsupervised RF model
   # p_load(randomForest)
-  # rf <- randomForest(temp2, proximity = T)
-  # varImpPlot(rf, sort = T, scale = T) # Importance of each predictor
+  # rf <- randomForest(temp2, proximity = TRUE)
+  # varImpPlot(rf, sort = TRUE, scale = TRUE) # Importance of each predictor
   #
   # # Show outliers
   # prox <- as.data.frame(rf$proximity)
@@ -58,9 +58,9 @@ SR_anomaly_detection <- function() {
   #                              y=42, #response (ignored - pick any non-constant column)
   #                              data=train_hex,
   #                              activation="Tanh",
-  #                              autoencoder=T,
+  #                              autoencoder=TRUE,
   #                              hidden=c(50),
-  #                              ignore_const_cols=F,
+  #                              ignore_const_cols=FALSE,
   #                              epochs=1)
   # test_rec_error <- as.data.frame(h2o.anomaly(test_hex, ae_model))
   # test_features_deep <- h2o.deepfeatures(test_hex, ae_model, layer=1); summary(test_features_deep)

@@ -4,7 +4,12 @@
 \alias{SR_NA_plot}
 \title{NA plot}
 \usage{
-SR_NA_plot(df, save = F, filename = "NA_Plot.png", path_output = path_output)
+SR_NA_plot(
+  df,
+  save = FALSE,
+  filename = "NA_Plot.png",
+  path_output = path_output
+)
 }
 \arguments{
 \item{df}{data.frame}

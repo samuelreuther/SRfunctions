@@ -4,7 +4,7 @@
 \alias{SR_remove_column_with_unique_value}
 \title{Remove columns with unique value}
 \usage{
-SR_remove_column_with_unique_value(df, remove_na = F, silent = F)
+SR_remove_column_with_unique_value(df, remove_na = FALSE, silent = FALSE)
 }
 \arguments{
 \item{df}{data.frame}
@@ -31,6 +31,6 @@ SR_remove_column_with_unique_value(df = data.frame(numeric = c(0, NA, 0.3, 0.5, 
                                                    character = c("a", "b", NA, "d", NA, "f"),
                                                    integer = c(0L, NA, NA, NA, NA, NA),
                                                    remove = c(1, 1, 1, 1, 1, 1)),
-                                   remove_na = T)
+                                   remove_na = TRUE)
 
 }
