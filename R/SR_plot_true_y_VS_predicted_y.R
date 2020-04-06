@@ -17,9 +17,12 @@
 #'
 #' @export
 SR_plot_true_y_VS_predicted_y <- function(true_y, predicted_y,
-                                          path_output = path_output, save = F){
-  library(tidyverse)
-  library(Metrics)
+                                          path_output = NULL, save = F){
+  # load some libraries
+  suppressMessages(library(dplyr))
+  suppressMessages(library(ggplot2))
+  suppressMessages(library(Metrics))
+  #
   df <- data.frame(y = true_y[], pr = predicted_y[])
   p <- ggplot(df, aes(x = y, y = pr)) +
     geom_point() +

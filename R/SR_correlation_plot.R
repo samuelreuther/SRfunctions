@@ -1,6 +1,28 @@
-SR_correlation_plot <- function(df, plot = T, save = F, filename = "NA_Correlation.png",
-                                path_output = "") {
-  p_load(corrplot, purrr)
+#' Correlation plot
+#'
+#' Plot correlation of all numeric, integer and date variables of a data.frame.
+#'
+#' @param df data.frame
+#' @param save Boolean
+#' @param filename character, must end with "*png"
+#' @param path_output character
+#'
+#' @return matrix, prints a plot
+#'
+#' @example
+#' data("mtcars")
+#' SR_correlation_plot(df = mtcars)
+#'
+#' @export
+SR_correlation_plot <- function(df,
+                                save = F, filename = "NA_Correlation.png",
+                                path_output = NULL) {
+  # load some libraries
+  suppressMessages(library(dplyr))
+  suppressMessages(library(ggplot2))
+  suppressMessages(suppressWarnings(library(corrplot)))
+  suppressMessages(library(purrr))
+  #
   # select numeric, integer and date variables
   df2 <- df %>%
     keep(SR_is_date) %>%
@@ -10,12 +32,14 @@ SR_correlation_plot <- function(df, plot = T, save = F, filename = "NA_Correlati
     keep(is.numeric)   # includes integer
   if (ncol(df2) > 0) df <- cbind(df, df2)
   rm(df2)
+  #
   # remove variables without variation
   df <- SR_remove_column_with_unique_value(df, remove_na = T, silent = T)
+  #
   # calculate correlation
   cor_matrix <- cor(df, use = "pairwise.complete.obs")
   cor_matrix[is.na(cor_matrix)] <- 0
-  # cor_matrix %>% View()
+  #
   # corrplot
   if (save) {
     png(filename = paste0(path_output, filename), height = 1000, width = 1000)

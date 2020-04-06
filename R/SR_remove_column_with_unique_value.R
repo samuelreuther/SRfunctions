@@ -1,4 +1,33 @@
-SR_remove_column_with_unique_value <- function(df, remove_na = F, silent = F) {
+#' Remove columns with unique value
+#'
+#' Clean up data.frame by removing unnecessary columns, e.g. columns that have only 1 value.
+#'
+#' @param df data.frame
+#' @param remove_na Boolean: should NA values be removed before counting different values?
+#' @param silent Boolean
+#'
+#' @return data.frame
+#'
+#' @examples
+#' # removes the variable "remove" because all values are "1"
+#' SR_remove_column_with_unique_value(df = data.frame(numeric = c(0, NA, 0.3, 0.5, NA, 1),
+#'                                                    character = c("a", "b", NA, "d", NA, "f"),
+#'                                                    integer = c(0L, NA, NA, NA, NA, NA),
+#'                                                    remove = c(1, 1, 1, 1, 1, 1)))
+#'
+#' # in addition removes variable "integer" because it only has the values "0" and "NA"
+#' SR_remove_column_with_unique_value(df = data.frame(numeric = c(0, NA, 0.3, 0.5, NA, 1),
+#'                                                    character = c("a", "b", NA, "d", NA, "f"),
+#'                                                    integer = c(0L, NA, NA, NA, NA, NA),
+#'                                                    remove = c(1, 1, 1, 1, 1, 1)),
+#'                                    remove_na = T)
+#'
+#' @export
+SR_remove_column_with_unique_value <- function(df,
+                                               remove_na = F, silent = F) {
+  # load some libraries
+  suppressMessages(library(dplyr))
+  #
   if ((nrow(df) <= 1)) {
     return(df)
   } else {
@@ -20,6 +49,7 @@ SR_remove_column_with_unique_value <- function(df, remove_na = F, silent = F) {
       print(setdiff(temp, names(df)))
     }
     df <- droplevels(df)
+    #
     # return data.frame
     return(df)
   }

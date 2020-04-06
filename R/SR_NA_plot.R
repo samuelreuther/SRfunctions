@@ -1,5 +1,27 @@
-SR_NA_plot <- function(df, save = F, filename = "NA_Plot.png", path_output = path_output) {
-  library(scales)
+#' NA plot
+#'
+#' Plots (1) the occurence of NAs and (2) correlation of them in a data.frame.
+#'
+#' @param df data.frame
+#' @param save Boolean
+#' @param filename character, must end with "*png"
+#' @param path_output character
+#'
+#' @return matrix, prints 2 plots
+#'
+#' @example
+#' SR_NA_plot(df = data.frame(numeric = c(0, NA, 0.3, 0.5, NA, 1),
+#'                            character = c("a", "b", NA, "d", NA, "f"),
+#'                            integer = c(0L, NA, 3L, 5L, NA, 1L)))
+#'
+#' @export
+SR_NA_plot <- function(df,
+                       save = F, filename = "NA_Plot.png", path_output = path_output) {
+  # load some libraries
+  suppressMessages(library(dplyr))
+  suppressMessages(library(ggplot2))
+  suppressMessages(library(scales))
+  #
   # calculate NAs
   missings <- data.frame(VarName = names(df),
                          NAs = sapply(df, function(x) sum(is.na(x))),
@@ -7,6 +29,7 @@ SR_NA_plot <- function(df, save = F, filename = "NA_Plot.png", path_output = pat
   missings <- missings[missings$NAs > 0, ]
   missings <- missings[order(-missings[, 2]), ]
   rownames(missings) <- NULL
+  #
   # plot NAs
   a <- qplot(NAs_in_p, reorder(VarName, NAs), data = missings, ylab = "Variable") +
     scale_x_continuous(labels = scales::percent, limits = c(0,1)) + xlab("Anteil NAs pro Variable")

@@ -1,55 +1,52 @@
-SR_mosaicplot <- function(df, cutoff) {
+#' Mosaic plot (true y vs. predicted y)
+#'
+#' Plot a frequency count for a binary confusion matrix (true y vs. predicted y).
+#'
+#' @param df data.frame with columns "y_true" and "predicted_y"
+#' @param cutoff numeric (default = 0.5): cutoff value for predicted_y to count as "1"
+#'
+#' @return ggplot-graphic
+#'
+#' @examples
+#' SR_mosaicplot(df = data.frame(y_true = c(0, 0, 0, 1, 1, 1),
+#'                               predicted_y = c(0.8, 0.1, 0.4, 0.2, 0.9, 0.8)),
+#'               cutoff = 0.5)
+#'
+#' @export
+SR_mosaicplot <- function(df, cutoff = 0.5) {
+  # thanks go to:
   # https://stackoverflow.com/questions/50227916/adding-counts-to-ggmosaic-can-this-be-done-simpler?noredirect=1&lq=1
   #
-  library(scales)
-  p <- df %>%
-    mutate(y = factor(y, levels = c("0", "1")),
-           pr = factor(ifelse(pr <= cutoff, 0, 1), levels = c("0", "1"))) %>%
-    group_by(y, pr) %>%
-    summarise(n = n()) %>%
-    mutate(n_percent = n / sum(n),
-           x.width = sum(n)) %>%
-    ggplot(aes(x = y, y = n)) +
-    geom_col(aes(width = x.width, fill = pr),
-             colour = "black", size = 0.5, position = position_fill(reverse = T)) +
-    geom_label(aes(label = n),
-               position = position_fill(vjust = 0.5)) +
-    facet_grid(.~y, space = "free", scales = "free", switch = "x") +
-    scale_y_continuous(labels = scales::percent) +
-    labs(x = "Actual y", y = "Predicted y", fill = "Predicted y",
-         title = "Confusion Matrix") +
-    theme(axis.text.x = element_blank(),
-          axis.ticks.x = element_blank(),
-          axis.title.y = element_blank(),
-          strip.background = element_blank(),
-          panel.spacing = unit(0, "pt"))
+  # load some libraries
+  suppressMessages(library(dplyr))
+  suppressMessages(library(ggplot2))
+  suppressMessages(library(scales))
+  #
+  # generate plot
+  # suppressing warning: Ignoring unknown aesthetics: width
+  suppressWarnings(
+    p <- df %>%
+      mutate(y_true = factor(y_true, levels = c("0", "1")),
+             predicted_y = factor(ifelse(predicted_y <= cutoff, 0, 1), levels = c("0", "1"))) %>%
+      group_by(y_true, predicted_y) %>%
+      summarise(n = n()) %>%
+      mutate(n_percent = n / sum(n),
+             x.width = sum(n)) %>%
+      ggplot(aes(x = y_true, y = n)) +
+      geom_col(aes(width = x.width, fill = predicted_y),
+               colour = "black", size = 0.5, position = position_fill(reverse = T)) +
+      geom_label(aes(label = n),
+                 position = position_fill(vjust = 0.5)) +
+      facet_grid(.~y_true, space = "free", scales = "free", switch = "x") +
+      scale_y_continuous(labels = scales::percent) +
+      labs(x = "True y", y = "Predicted y", fill = "Predicted y",
+           title = "Confusion Matrix") +
+      theme(axis.text.x = element_blank(),
+            axis.ticks.x = element_blank(),
+            axis.title.y = element_blank(),
+            strip.background = element_blank(),
+            panel.spacing = unit(0, "pt")))
+  #
+  # return plot
   return(p)
 }
-
-# SR_mosaicplot_old <- function(var1, var2, name_x = NULL, i = NULL, significance = NULL) {
-#   # https://stackoverflow.com/questions/19233365/how-to-create-a-marimekko-mosaic-plot-in-ggplot2
-#   levVar1 <- length(levels(var1))
-#   # levVar2 <- length(levels(var2))
-#   #
-#   jointTable <- prop.table(table(var1, var2))
-#   plotData <- as.data.frame(jointTable)
-#   plotData$marginVar1 <- prop.table(table(var1))
-#   plotData$var2Height <- plotData$Freq / plotData$marginVar1
-#   plotData$var1Center <- c(0, cumsum(plotData$marginVar1)[1:levVar1 - 1]) +
-#     plotData$marginVar1 / 2
-#   #
-#   p <- ggplot(plotData, aes(var1Center, var2Height)) +
-#     # geom_bar(stat = "identity", aes(fill = var2), col = "Black") +
-#     geom_bar(stat = "identity", aes(width = marginVar1, fill = var2), col = "Black") +
-#     geom_text(aes(label = as.character(var1), x = var1Center, y = 1.05)) +
-#     scale_x_continuous(labels = percent) + scale_y_continuous(labels = percent)
-#   if (!is.null(i) & !is.null(significance)) {
-#     p <- p +
-#       labs(x = paste0("Anteil: ", name_x), y = "Anteil: y", fill = "y",
-#            title = paste0(i, ".) ", name_x, " (p-Wert = ", significance, ")"))
-#   } else {
-#     p <- p +
-#       labs(title = "Confusion Matrix", y = "Predicted y", x = "Actual y", fill = "y")
-#   }
-#   return(p)
-# }

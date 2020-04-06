@@ -1,14 +1,6 @@
-# SR_mosaicplot
-
-# SR_NA_plot
-
-# SR_correlation_plot
-
 # SR_replace_NA_RF
 
 # SR_replace_umlaute
-
-# SR_remove_column_with_unique_value
 
 # SR_feat_eng_rows
 
