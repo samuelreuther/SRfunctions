@@ -1,4 +1,28 @@
-SR_visualize_df <- function(df, sample = 1000, save = FALSE, df_name = "", no_graphs = 6) {
+#' Visualize data.frame
+#'
+#' Plots all variables of a data.frame in groups of their classes (numeric,
+#' factor/character, date)
+#'
+#' @param df data.frame
+#' @param sample integer
+#' @param no_graphs integer
+#' @param save Boolean
+#' @param df_name character, must end with "*png"
+#'
+#' @return NULL, prints plots
+#'
+#' @examples
+#' SR_visualize_df(data.frame(var_numeric = c(1, 2, 2, 3, 3, 4),
+#'                            var_character = c("a", NA, "b", "c", "c", "d"),
+#'                            var_factor = factor(c("a", "b", "c", "c", "d", NA)),
+#'                            var_date = seq.Date(Sys.Date(), by = "day", length.out = 6)))
+#'
+#' @export
+SR_visualize_df <- function(df,
+                            sample = 1000,
+                            no_graphs = 6,
+                            save = FALSE,
+                            df_name = "") {
   if (save) {
     if (!dir.exists(path_output)) dir.create(path_output)
   }
@@ -87,7 +111,7 @@ SR_visualize_df <- function(df, sample = 1000, save = FALSE, df_name = "", no_gr
             tidyr::gather()
         }
         p <- temp_ %>%
-          ggplot2::ggplot(aes(value)) +
+          ggplot2::ggplot(ggplot2::aes(value)) +
           ggplot2::facet_wrap(~ key, scales = "free") +
           ggplot2::geom_histogram(bins = 30, na.rm = TRUE) +
           ggplot2::labs(title = "Date variables", x = "", y = "Anzahl")
@@ -99,4 +123,7 @@ SR_visualize_df <- function(df, sample = 1000, save = FALSE, df_name = "", no_gr
     }
     rm(temp)
   }, TRUE)
+  #
+  # return NULL
+  return(invisible(NULL))
 }
