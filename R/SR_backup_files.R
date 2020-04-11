@@ -1,18 +1,40 @@
-# Function to backup files of a specific directory
-#
-SR_backup_files <- function(path_from, path_to, exclude = NULL, include = NULL) {
-  #
+#' Backup files
+#'
+#' Function to backup files of a specific directory
+#'
+#' @param path_from character: path to folder and files as backup input
+#' @param path_to character: path to folder and files as backup output
+#' @param include character: files to be included from backup (partial string match),
+#' all other files will be excluded
+#' @param exclude character: files to be excluded from backup (partial string match)
+#' @param return_lists boolean: return lists of files from the backup process
+#'
+#' @return NULL, if 'return_lists = FALSE' then list
+#'
+#' @examples
+#' SR_backup_files(path_from = getwd(),
+#'                 path_to = paste0(getwd(), "/my_backup_folder/"),
+#'                 include = c("license"),
+#'                 exclude = c("backup"))
+#'
+#' @export
+SR_backup_files <- function(path_from = NULL,
+                            path_to = NULL,
+                            include = NULL,
+                            exclude = NULL,
+                            return_lists = FALSE) {
   # measure time
   start_time <- Sys.time()
   #
   # initialize count variables
   new <- 0
   update <- 0
-  no_update <- 0
   skipped <- 0
-  skipped_files <- list()
-  updated_files <- list()
+  no_update <- 0
   new_files <- list()
+  updated_files <- list()
+  skipped_files <- list()
+  not_updated_files <- list()
   #
   # list of existing files
   files_from <- list.files(path = path_from, full.names = TRUE, recursive = TRUE,
@@ -26,8 +48,8 @@ SR_backup_files <- function(path_from, path_to, exclude = NULL, include = NULL) 
       # pacman::p_load(stringi)
       files_from[i] <- files_from[i] %>%
         stringi::stri_enc_toutf8(.) %>%
-        stringi::stri_unescape_unicode(.) %>%
-        gsub("�", "X", ., fixed = TRUE)
+        stringi::stri_unescape_unicode(.) # %>%
+        # gsub("�", "X", ., fixed = TRUE)
     }
     rm(e)
   }; rm(i)
@@ -35,7 +57,9 @@ SR_backup_files <- function(path_from, path_to, exclude = NULL, include = NULL) 
   # exclude files
   if (!is.null(exclude)) {
     for (i in seq_along(exclude)) {
-      files_from <- files_from[!grepl(exclude[i], files_from, fixed = TRUE)]
+      files_from <- files_from[!grepl(tolower(exclude[i]),
+                                      tolower(files_from),
+                                      fixed = TRUE)]
     }
   }
   #
@@ -43,7 +67,10 @@ SR_backup_files <- function(path_from, path_to, exclude = NULL, include = NULL) 
   if (!is.null(include)) {
     files_from_ <- c()
     for (i in seq_along(include)) {
-      files_from_ <- c(files_from_, files_from[grepl(include[i], files_from)])
+      files_from_ <- c(files_from_,
+                       files_from[grepl(tolower(include[i]),
+                                        tolower(files_from),
+                                        fixed = TRUE)])
     }
     files_from <- files_from_
   }
@@ -94,6 +121,7 @@ SR_backup_files <- function(path_from, path_to, exclude = NULL, include = NULL) 
         updated_files <- c(updated_files, filename_to)
       } else {
         no_update <- no_update + 1
+        not_updated_files <- c(not_updated_files, filename_to)
       }
       rm(file_info_from, file_info_to)
     }
@@ -101,16 +129,28 @@ SR_backup_files <- function(path_from, path_to, exclude = NULL, include = NULL) 
   # print summary
   end_time <- Sys.time()
   cat(paste0("Backup of directory:   ", path_from,
-             "   (", round(as.numeric(difftime(end_time, start_time, units = "mins")), 2), " mins).\n",
+             "   (", round(as.numeric(difftime(end_time, start_time,
+                                               units = "mins")), 2), " mins).\n",
              "New files:         ", new, "\n",
              "Updated files:     ", update, "\n",
              "Skipped files:     ", skipped, "\n",
              "Not updated files: ", no_update, "\n"))
   # assign file lists to global environment
-  assign("files_from", files_from, envir = .GlobalEnv)
-  assign("skipped_files", skipped_files, envir = .GlobalEnv)
-  assign("new_files", new_files, envir = .GlobalEnv)
-  assign("updated_files", updated_files, envir = .GlobalEnv)
+  # assign("files_from", files_from, envir = .GlobalEnv)
+  # assign("skipped_files", skipped_files, envir = .GlobalEnv)
+  # assign("new_files", new_files, envir = .GlobalEnv)
+  # assign("updated_files", updated_files, envir = .GlobalEnv)
+  #
+  # return
+  if (return_lists) {
+    return(list(files_from = files_from,
+                new_files = new_files,
+                updated_files = updated_files,
+                skipped_files = skipped_files,
+                not_updated_files = not_updated_files))
+  } else {
+    return(invisible(NULL))
+  }
 }
 #
 #
