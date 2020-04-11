@@ -1,7 +1,4 @@
 SR_feat_eng_date <- function(df, only_date_to_numeric = TRUE) {
-  # load some libraries
-  suppressMessages(library(lubridate)) # for week
-  #
   for (i in 1:ncol(df)) {
     if (SR_is_date(df[, i])) {
       j <- names(df)[i]

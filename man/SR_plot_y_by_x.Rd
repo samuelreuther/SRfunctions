@@ -27,7 +27,7 @@ Generates different univariate plots, depending if x/y are numeric, or factor/ch
 data("mtcars")
 SR_plot_y_by_x(mtcars,
                x = "hp", y = "mpg")
-SR_plot_y_by_x(mtcars \%>\% mutate(hp = as.factor(hp)),
+SR_plot_y_by_x(mtcars \%>\% dplyr::mutate(hp = as.factor(hp)),
                x = "hp", y = "mpg")
 
 }

@@ -22,11 +22,11 @@ SR_backup_files <- function(path_from, path_to, exclude = NULL, include = NULL) 
   # clean up name if "invalid multibyte string"
   for (i in seq_along(files_from)) {
     e <- try(nchar(files_from[i]), silent = TRUE)
-    if (is(e, "try-error")) {
-      p_load(stringi)
+    if (methods::is(e, "try-error")) {
+      # pacman::p_load(stringi)
       files_from[i] <- files_from[i] %>%
-        stri_enc_toutf8(.) %>%
-        stri_unescape_unicode(.) %>%
+        stringi::stri_enc_toutf8(.) %>%
+        stringi::stri_unescape_unicode(.) %>%
         gsub("�", "X", ., fixed = TRUE)
     }
     rm(e)

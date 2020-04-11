@@ -17,8 +17,8 @@ SR_feat_eng_numeric <- function(df,
       if (trim_outliers & !grepl("_LabelEnc", j)) {
         limit = 5
         if (is.null(use_other_df)) use_other_df <- df
-        mean <- mean(use_other_df[, j] %>% inf.omit(), na.rm = TRUE)
-        sd <- sd(use_other_df[, j] %>% inf.omit(), na.rm = TRUE)
+        mean <- mean(use_other_df[, j] %>% SR_omit_non_regular_values(), na.rm = TRUE)
+        sd <- stats::sd(use_other_df[, j] %>% SR_omit_non_regular_values(), na.rm = TRUE)
         if (!mean %in% c(Inf, NA, NaN) & !sd %in% c(Inf, NA, NaN)) {
           df[!is.na(df[, j]) & df[, j] > mean + limit * sd, j] <- mean + limit * sd
           df[!is.na(df[, j]) & df[, j] < mean - limit * sd, j] <- mean - limit * sd
@@ -48,8 +48,8 @@ SR_feat_eng_numeric <- function(df,
       #
       # log_scale, i.e. if variable is skewed
       if (log_scale_p1 & !grepl("_LabelEnc", j)) {
-        p_load(moments)
-        if (skewness(df[, j]) > 2) {
+        # pacman::p_load(moments)
+        if (moments::skewness(df[, j]) > 2) {
           df[, ] <- log(df[, j] + 1)
         }
       }

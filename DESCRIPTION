@@ -28,6 +28,15 @@ Imports:
     lubridate,
     corrplot,
     purrr,
-    magrittr
+    magrittr,
+    grDevices,
+    data.table,
+    reshape2,
+    tidyr,
+    moments,
+    stringi,
+    DT,
+    miniUI,
+    shiny
 VignetteBuilder: knitr
 RoxygenNote: 7.1.0

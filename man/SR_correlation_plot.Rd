@@ -26,3 +26,8 @@ matrix, prints a plot
 \description{
 Plot correlation of all numeric, integer and date variables of a data.frame.
 }
+\examples{
+data("mtcars")
+SR_correlation_plot(df = mtcars)
+
+}

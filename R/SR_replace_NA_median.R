@@ -33,7 +33,7 @@ SR_replace_NA_median <- function(df, var = NULL, use_other_df = NULL) {
       # create a new variable that retains information about missing values
       df[, paste0(var, "_NA")] <- ifelse(is.na(df[, var]), 1, 0)
       # replace NAs with median
-      df[is.na(df[, var]), var] <- median(use_other_df[, var], na.rm = TRUE)
+      df[is.na(df[, var]), var] <- stats::median(use_other_df[, var], na.rm = TRUE)
     }
   } else {
     # for the whole data.frame
@@ -42,7 +42,7 @@ SR_replace_NA_median <- function(df, var = NULL, use_other_df = NULL) {
         # create a new variable that retains information about missing values
         df[, paste0(names(df)[var], "_NA")] <- ifelse(is.na(df[, var]), 1, 0)
         # replace NAs with median
-        df[is.na(df[, var]), var] <- median(use_other_df[, var], na.rm = TRUE)
+        df[is.na(df[, var]), var] <- stats::median(use_other_df[, var], na.rm = TRUE)
       }
     }
   }

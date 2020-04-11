@@ -7,7 +7,7 @@
 #'
 #' @return Null.
 #'
-#' @example
+#' @examples
 #' SR_search_variables(df = data.frame(CUSTOMER_ID = 1001:1010,
 #'                                     CUSTOMER_NAME = LETTERS[1:10],
 #'                                     ADRESSE_ID = 1:10),
@@ -21,7 +21,9 @@ SR_search_variables <- function(df, var) {
   # var_names <- unique(var_names)
   #
   # data.frame of found/matched variables
-  xx_temp <- df %>% select(one_of(var_names)) %>% data.frame()
+  xx_temp <- df %>%
+    dplyr::select(dplyr::one_of(var_names)) %>%
+    data.frame()
   #
   # return results
   if (ncol(xx_temp) >= 1) {
@@ -40,17 +42,17 @@ SR_search_variables <- function(df, var) {
     #
     # number of distinct values
     cat("Number of distinct values of variable(s): "); cat("\n")
-    print(xx_temp %>% summarise_all(n_distinct))
+    print(xx_temp %>% dplyr::summarise_all(dplyr::n_distinct))
     cat("\n")
     #
     # summary of variables
     cat("Summary of variable(s): "); cat("\n")
-    print(summary(xx_temp %>% mutate_if(is.character, as.factor)))
+    print(summary(xx_temp %>% dplyr::mutate_if(is.character, as.factor)))
     cat("\n")
     # head and tail of variables
     cat("Head and tail of variable(s): "); cat("\n")
-    print(rbind(df %>% select(one_of(var_names)) %>% head(5),
-                df %>% select(one_of(var_names)) %>% tail(5)))
+    print(rbind(df %>% dplyr::select(dplyr::one_of(var_names)) %>% utils::head(5),
+                df %>% dplyr::select(dplyr::one_of(var_names)) %>% utils::tail(5)))
     # missings
     # print(xx_temp %>% summarise_all(is.na)); print(" ")
   } else {

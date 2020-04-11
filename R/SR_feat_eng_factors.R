@@ -17,7 +17,7 @@ SR_feat_eng_factors <- function(df,
   ### initiate table for saving encodings
   if (label_encoding & is.null(use_other_df)) {
     factor_encoding <- data.frame(feature = NA, no = NA, levels = NA)
-    factor_encoding <- na.omit(factor_encoding)
+    factor_encoding <- stats::na.omit(factor_encoding)
   }
   #
   for (i in names(df)) {
@@ -53,7 +53,7 @@ SR_feat_eng_factors <- function(df,
       #
       ### make_na_explicit
       if (make_na_explicit & sum(is.na(df[, i])) > 0) {
-        df[, i] <- fct_explicit_na(df[, i], na_level = "Missing")
+        df[, i] <- forcats::fct_explicit_na(df[, i], na_level = "Missing")
       }
       #
       ### replace_na_by_modus
@@ -66,20 +66,20 @@ SR_feat_eng_factors <- function(df,
       if (combine_rare_levels) {
         if (is.null(use_other_df)) {
           if (is.null(prop)) {
-            df[, i] <- fct_lump(df[, i], other_level = "Other")
-            # suppressWarnings(df[, i] <- fct_lump(df[, i], other_level = "Other"))   # "other" is still the smallest level
+            df[, i] <- forcats::fct_lump(df[, i], other_level = "Other")
+            # suppressWarnings(df[, i] <- forcats::fct_lump(df[, i], other_level = "Other"))   # "other" is still the smallest level
           } else {
-            df[, i] <- fct_lump(df[, i], prop = prop, other_level = "Other")
-            # suppressWarnings(df[, i] <- fct_lump(df[, i], prop = prop, other_level = "Other"))
+            df[, i] <- forcats::fct_lump(df[, i], prop = prop, other_level = "Other")
+            # suppressWarnings(df[, i] <- forcats::fct_lump(df[, i], prop = prop, other_level = "Other"))
           }
         } else {
           # convert to factor with levels from other df
           df[, i] <- factor(df[, i], levels = levels(use_other_df[, i]))
           if (sum(is.na(df[, i])) > 0) {
-            suppressWarnings(df[, i] <- fct_other(df[, i], keep = levels(df[, i]),
-                                                  other_level = "Other"))
-            # df[, i] <- fct_other(df[, i], keep = levels(df[, i]), other_level = "Other")
-            df[, i] <- fct_explicit_na(df[, i], na_level = "Other")
+            suppressWarnings(df[, i] <- forcats::fct_other(df[, i], keep = levels(df[, i]),
+                                                           other_level = "Other"))
+            # df[, i] <- forcats::fct_other(df[, i], keep = levels(df[, i]), other_level = "Other")
+            df[, i] <- forcats::fct_explicit_na(df[, i], na_level = "Other")
             # suppressWarnings(df[, i][is.na(df[, i])] <- "Other")
           }
         }
@@ -98,7 +98,7 @@ SR_feat_eng_factors <- function(df,
                                               levels = levels(df[, i])))
           df[, i] <- as.numeric(df[, i])
           # colnames(df)[colnames(df) == i] <- paste0(i, "_LabelEnc")
-          setnames(df, i, paste0(i, "_LabelEnc"))
+          data.table::setnames(df, i, paste0(i, "_LabelEnc"))
           # df[, paste0(i, "_LabelEnc")] <- as.numeric(df[, i])
         } else {
           # use_other_df
@@ -106,18 +106,18 @@ SR_feat_eng_factors <- function(df,
           df[, i] <- factor(df[, i],
                             levels = factor_encoding$levels[factor_encoding$feature == i])
           if (sum(is.na(df[, i])) > 0) {
-            suppressWarnings(df[, i] <- fct_other(df[, i], keep = levels(df[, i]),
-                                                  other_level = "Other"))
-            df[, i] <- fct_explicit_na(df[, i], na_level = "Other")
+            suppressWarnings(df[, i] <- forcats::fct_other(df[, i], keep = levels(df[, i]),
+                                                           other_level = "Other"))
+            df[, i] <- forcats::fct_explicit_na(df[, i], na_level = "Other")
           }
           # if (is.character(df[, i])) {
           #   df[, i] <- factor(df[, i], levels = levels(use_other_df[, i]))
           # }
           df[, i] <- as.numeric(df[, i])
           # colnames(df)[colnames(df) == i] <- paste0(i, "_LabelEnc")
-          # setnames(df, gsub("_LabelEnc_LabelEnc", "_LabelEnc", names(df)))
-          setnames(df, i, paste0(i, "_LabelEnc"))
-          # setnames(df, gsub("_LabelEnc_LabelEnc", "_LabelEnc", names(df)))
+          # data.table::setnames(df, gsub("_LabelEnc_LabelEnc", "_LabelEnc", names(df)))
+          data.table::setnames(df, i, paste0(i, "_LabelEnc"))
+          # data.table::setnames(df, gsub("_LabelEnc_LabelEnc", "_LabelEnc", names(df)))
           # df[, paste0(i, "_LabelEnc")] <- as.numeric(df[, i])
         }
         # df[, i] <- NULL   # ???
@@ -126,7 +126,7 @@ SR_feat_eng_factors <- function(df,
       # ### count_encoding
       # # => out of fold !!!      # TODO !!!
       # if (count_encoding) {
-      #   temp <- count(df, df[, i]) %>% data.frame %>% setnames(c("level", "n", "rank"))
+      #   temp <- count(df, df[, i]) %>% data.frame %>% data.table::setnames(c("level", "n", "rank"))
       #   # assign(temp)
       #   df[, paste0(i, "_CountEnc")]
       #   for (k in 1:length(levels(df[, i]))) {
@@ -140,7 +140,7 @@ SR_feat_eng_factors <- function(df,
       # # => out of fold !!!     # TODO !!!
       # if (rank_encoding) {
       #   temp <- count(df, df[, i]) %>% mutate(rank = rank(-n)) %>% data.frame %>%
-      #     setnames(c("level", "n", "rank"))
+      #     data.table::setnames(c("level", "n", "rank"))
       #   # assign(temp)
       #   df[, paste0(i, "_RankEnc")] <- NA
       #   for (k in 1:length(levels(df[, i]))) {

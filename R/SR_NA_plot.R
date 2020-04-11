@@ -9,7 +9,7 @@
 #'
 #' @return matrix, prints 2 plots
 #'
-#' @example
+#' @examples
 #' SR_NA_plot(df = data.frame(numeric = c(0, NA, 0.3, 0.5, NA, 1),
 #'                            character = c("a", "b", NA, "d", NA, "f"),
 #'                            integer = c(0L, NA, 3L, 5L, NA, 1L)))
@@ -17,11 +17,6 @@
 #' @export
 SR_NA_plot <- function(df,
                        save = FALSE, filename = "NA_Plot.png", path_output = path_output) {
-  # load some libraries
-  suppressMessages(library(dplyr))
-  suppressMessages(library(ggplot2))
-  suppressMessages(library(scales))
-  #
   # calculate NAs
   missings <- data.frame(VarName = names(df),
                          NAs = sapply(df, function(x) sum(is.na(x))),
@@ -31,17 +26,19 @@ SR_NA_plot <- function(df,
   rownames(missings) <- NULL
   #
   # plot NAs
-  a <- qplot(NAs_in_p, reorder(VarName, NAs), data = missings, ylab = "Variable") +
-    scale_x_continuous(labels = scales::percent, limits = c(0,1)) + xlab("Anteil NAs pro Variable")
+  a <- ggplot2::qplot(NAs_in_p, stats::reorder(VarName, NAs), data = missings,
+                      ylab = "Variable") +
+    ggplot2::scale_x_continuous(labels = scales::percent, limits = c(0,1)) +
+    ggplot2::xlab("Anteil NAs pro Variable")
   print(a)
   if (save) {
-    try(ggsave(paste0(path_output, filename), plot = a, width = 9.92, height = 5.3))
+    try(ggplot2::ggsave(paste0(path_output, filename), plot = a, width = 9.92, height = 5.3))
   }
   print(paste0("Proportion NAs in df: ", sum(is.na(df)) / (ncol(df)*nrow(df))))
   print(missings)  # [1:min(which(missings$NAs_in_p == 0)) - 1, ]
   # plot correlation of NAs
   if (nrow(missings) > 1) {
-    na_dummy <- df %>% select(one_of(as.character(missings$VarName)))
+    na_dummy <- df %>% dplyr::select(dplyr::one_of(as.character(missings$VarName)))
     # na_dummy <- data.frame()
     for (i in as.character(missings$VarName)) na_dummy[, i] <- ifelse(is.na(df[, i]), 1, 0)
     SR_correlation_plot(na_dummy, save = save,

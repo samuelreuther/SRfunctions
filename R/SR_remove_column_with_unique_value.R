@@ -25,9 +25,6 @@
 #' @export
 SR_remove_column_with_unique_value <- function(df,
                                                remove_na = FALSE, silent = FALSE) {
-  # load some libraries
-  suppressMessages(library(dplyr))
-  #
   if ((nrow(df) <= 1)) {
     return(df)
   } else {
@@ -39,7 +36,7 @@ SR_remove_column_with_unique_value <- function(df,
     # save column names for the comparison later
     temp <- names(df)
     # filter columns with only 1 distinct value
-    df <- Filter(function(x) (n_distinct(x, na.rm = remove_na) > 1), df)
+    df <- Filter(function(x) (dplyr::n_distinct(x, na.rm = remove_na) > 1), df)
     # df <- Filter(function(x)(length(unique(x)) > 1), df[1:nrow(df),])
     if (!silent) {
       # print summary after processing

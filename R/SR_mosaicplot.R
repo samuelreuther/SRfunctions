@@ -7,17 +7,12 @@
 #'
 #' @return ggplot-graphic
 #'
-#' @example
+#' @examples
 #' SR_mosaicplot(var1 = c(0, 0, 0, 1, 1, 1),
 #'               var2 = c(1, 0, 0, 0, 1, 1))
 #'
 #' @export
 SR_mosaicplot <- function(var1, var2) {
-  # load some libraries
-  suppressMessages(library(dplyr))
-  suppressMessages(library(ggplot2))
-  suppressMessages(library(scales))
-  #
   # too many levels for plot
   if (length(unique(var1)) > 20 | length(unique(var1)) > 20) {
     cat("Error: variables have too many levels!")
@@ -28,25 +23,26 @@ SR_mosaicplot <- function(var1, var2) {
   # suppressing warning: Ignoring unknown aesthetics: width
   suppressWarnings(
     p <- data.frame(var1, var2) %>%
-      mutate_if(is.numeric, as.factor) %>%
-      group_by(var1, var2) %>%
-      summarise(n = n()) %>%
-      mutate(n_percent = n / sum(n),
-             x.width = sum(n)) %>%
-      ggplot(aes(x = var1, y = n)) +
-      geom_col(aes(width = x.width, fill = var2),
-               colour = "black", size = 0.5, position = position_fill(reverse = TRUE)) +
-      geom_label(aes(label = n),
-                 position = position_fill(vjust = 0.5)) +
-      facet_grid(.~var1, space = "free", scales = "free", switch = "x") +
-      scale_y_continuous(labels = scales::percent) +
-      labs(x = "Var1", y = "Var2", fill = "Var2",
-           title = "Mosaic plot") +
-      theme(axis.text.x = element_blank(),
-            axis.ticks.x = element_blank(),
-            axis.title.y = element_blank(),
-            strip.background = element_blank(),
-            panel.spacing = unit(0, "pt")))
+      dplyr::mutate_if(is.numeric, as.factor) %>%
+      dplyr::group_by(var1, var2) %>%
+      dplyr::summarise(n = dplyr::n()) %>%
+      dplyr::mutate(n_percent = n / sum(n),
+                    x.width = sum(n)) %>%
+      ggplot2::ggplot(ggplot2::aes(x = var1, y = n)) +
+      ggplot2::geom_col(ggplot2::aes(width = x.width, fill = var2),
+                        colour = "black", size = 0.5,
+                        position = ggplot2::position_fill(reverse = TRUE)) +
+      ggplot2::geom_label(ggplot2::aes(label = n),
+                          position = ggplot2::position_fill(vjust = 0.5)) +
+      ggplot2::facet_grid(.~var1, space = "free", scales = "free", switch = "x") +
+      ggplot2::scale_y_continuous(labels = scales::percent) +
+      ggplot2::labs(x = "Var1", y = "Var2", fill = "Var2",
+                    title = "Mosaic plot") +
+      ggplot2::theme(axis.text.x = ggplot2::element_blank(),
+                     axis.ticks.x = ggplot2::element_blank(),
+                     axis.title.y = ggplot2::element_blank(),
+                     strip.background = ggplot2::element_blank(),
+                     panel.spacing = ggplot2::unit(0, "pt")))
   #
   # return plot
   return(p)

@@ -26,9 +26,6 @@
 #'
 #' @export
 SR_replace_NA_modus <- function(df, var = NULL, use_other_df = NULL) {
-  # load some libraries
-  suppressMessages(library(forcats))
-  #
   # if other_df is defined, then use other_df for calculation of median
   if (is.null(use_other_df)) use_other_df <- df
   # if single var

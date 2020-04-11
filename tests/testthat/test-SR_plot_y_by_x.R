@@ -7,7 +7,7 @@ test_that("x numeric, y numeric", {
 })
 
 test_that("x factor, y numeric", {
-  expect_equal(SR_plot_y_by_x(mtcars %>% mutate(hp = as.factor(hp)),
+  expect_equal(SR_plot_y_by_x(mtcars %>% dplyr::mutate(hp = as.factor(hp)),
                               x = "hp", y = "mpg"),
                NULL)
 })

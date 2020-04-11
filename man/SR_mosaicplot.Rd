@@ -17,3 +17,8 @@ ggplot-graphic
 \description{
 Plot a frequency count for example a confusion matrix (true y vs. predicted y).
 }
+\examples{
+SR_mosaicplot(var1 = c(0, 0, 0, 1, 1, 1),
+              var2 = c(1, 0, 0, 0, 1, 1))
+
+}

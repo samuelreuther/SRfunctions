@@ -17,3 +17,10 @@ Null.
 \description{
 Finds matching and partial matching variables and prints a summary of it/them.
 }
+\examples{
+SR_search_variables(df = data.frame(CUSTOMER_ID = 1001:1010,
+                                    CUSTOMER_NAME = LETTERS[1:10],
+                                    ADRESSE_ID = 1:10),
+                    var = "id")
+
+}

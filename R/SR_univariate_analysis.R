@@ -9,21 +9,16 @@
 #'
 #' @return Boolean value TRUE or FALSE
 #'
-#' @example
+#' @examples
 #' data("mtcars")
 #' SR_univariate_analysis(mtcars %>%
-#'                          select(hp, cyl, mpg) %>%
-#'                          mutate(cyl = as.factor(cyl)),
+#'                          dplyr::select(hp, cyl, mpg) %>%
+#'                          dplyr::mutate(cyl = as.factor(cyl)),
 #'                        y_name = "mpg", save = FALSE)
 #'
 #' @export
 SR_univariate_analysis <- function(df, y_name,
                                    path_output = path_output, save = TRUE) {
-  # load some libraries
-  suppressMessages(library(dplyr))
-  suppressMessages(library(ggplot2))
-  suppressMessages(library(scales))
-  #
   # Check if y is in df
   if (!y_name %in% colnames(df)) {
     print("Error: Can't find y in df !!!")
@@ -37,17 +32,27 @@ SR_univariate_analysis <- function(df, y_name,
   # Sample if df has more than 10000 rows
   if (nrow(df) > 10000) {
     set.seed(1)
-    y_temp <- df %>% select(one_of(y_name)) %>% sample_n(10000, replace = FALSE) %>% data.frame()
+    y_temp <- df %>%
+      dplyr::select(dplyr::one_of(y_name)) %>%
+      dplyr::sample_n(10000, replace = FALSE) %>%
+      data.frame()
     set.seed(1)
-    df <- df %>% select(-one_of(y_name)) %>% sample_n(10000, replace = FALSE) %>% data.frame()
+    df <- df %>%
+      dplyr::select(-dplyr::one_of(y_name)) %>%
+      dplyr::sample_n(10000, replace = FALSE) %>%
+      data.frame()
   } else {
-    y_temp <- df %>% select(one_of(y_name)) %>% data.frame()
-    df <- df %>% select(-one_of(y_name)) %>% data.frame()
+    y_temp <- df %>%
+      dplyr::select(dplyr::one_of(y_name)) %>%
+      data.frame()
+    df <- df %>%
+      dplyr::select(-dplyr::one_of(y_name)) %>%
+      data.frame()
   }
   #
   # convert character as.factor
   df <- df %>%
-    mutate_if(is.character, as.factor)
+    dplyr::mutate_if(is.character, as.factor)
   #
   # Prepare table for summary of all significance tests
   significance <- data.frame(No = 1:ncol(df), Var = NA, P_Value = NA)
@@ -65,7 +70,7 @@ SR_univariate_analysis <- function(df, y_name,
     # prepare data
     temp <- data.frame(y = y_temp[, 1], x = df[, i])
     temp <- SR_feat_eng_factors(temp, make_na_explicit = TRUE)
-    temp <- na.omit(temp)
+    temp <- stats::na.omit(temp)
     # check if x = as.numeric(date)
     if (sum(is.na(as.Date(as.character(temp$x), format = "%Y%m%d"))) == 0) {
       temp$x <- as.Date(as.character(temp$x), format = "%Y%m%d")
@@ -96,8 +101,9 @@ SR_univariate_analysis <- function(df, y_name,
         # y: factor   x: factor
         # calculate significance ANOVA
         significance$P_Value[i] <-
-          round(chisq.test(temp$x, y = temp$y, p = rep(1/length(temp), length(temp$x)),
-                           simulate.p.value = TRUE, B = 100)[[3]], rounding)
+          round(stats::chisq.test(temp$x, y = temp$y,
+                                  p = rep(1/length(temp), length(temp$x)),
+                                  simulate.p.value = TRUE, B = 100)[[3]], rounding)
         # noch ändern!!!
         p <- SR_mosaicplot(var1 = temp$x, var2 = temp$y)
         # p <- SR_mosaicplot(var1 = temp$x, var2 = temp$y, name_x = names(df)[i])
@@ -111,54 +117,54 @@ SR_univariate_analysis <- function(df, y_name,
         # y: factor   x: numeric
         # calculate significance ANOVA
         significance$P_Value[i] <-
-          round(summary(aov(temp$x ~ temp$y))[[1]][["Pr(>F)"]][[1]], rounding)
-        p <- qplot(data = temp, x = x, geom = "density", color = y,
-                   main = paste0(i, ".) ", names(df)[i], " (p-Wert=",
-                                 format(significance$P_Value[i], nsmall = 3),")"),
-                   xlab = names(df)[i]) +
-          scale_x_continuous(breaks = pretty_breaks(6))
+          round(summary(stats::aov(temp$x ~ temp$y))[[1]][["Pr(>F)"]][[1]], rounding)
+        p <- ggplot2::qplot(data = temp, x = x, geom = "density", color = y,
+                            main = paste0(i, ".) ", names(df)[i], " (p-Wert=",
+                                          format(significance$P_Value[i], nsmall = 3),")"),
+                            xlab = names(df)[i]) +
+          ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(6))
       }
     } else {
       if (is.factor(temp$x)) {
         # y: numeric   x: factor
         # calculate significance ANOVA
         significance$P_Value[i] <-
-          round(summary(aov(temp$y ~ temp$x))[[1]][["Pr(>F)"]][[1]], rounding)
-        p <- qplot(data = temp, y = y, x = x, geom = "jitter",
-                   main = paste0(i, ".) ", names(df)[i], " (p-Wert=",
-                                 format(significance$P_Value[i], nsmall = 3),")"),
-                   xlab = names(df)[i]) +
-          stat_summary(fun.y = "mean", fun.ymin = "mean", fun.ymax = "mean",
-                       size = 0.3, geom = "crossbar", colour = "blue") +
-          scale_y_continuous(breaks = pretty_breaks(6))
-        } else {
+          round(summary(stats::aov(temp$y ~ temp$x))[[1]][["Pr(>F)"]][[1]], rounding)
+        p <- ggplot2::qplot(data = temp, y = y, x = x, geom = "jitter",
+                            main = paste0(i, ".) ", names(df)[i], " (p-Wert=",
+                                          format(significance$P_Value[i], nsmall = 3),")"),
+                            xlab = names(df)[i]) +
+          ggplot2::stat_summary(fun.y = "mean", fun.ymin = "mean", fun.ymax = "mean",
+                                size = 0.3, geom = "crossbar", colour = "blue") +
+          ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(6))
+      } else {
         # y: numeric   x: numeric
         # calculate significance ANOVA
         significance$P_Value[i] <-
-          round(summary(aov(temp$y ~ temp$x))[[1]][["Pr(>F)"]][[1]], rounding)
+          round(summary(stats::aov(temp$y ~ temp$x))[[1]][["Pr(>F)"]][[1]], rounding)
         # calculate bins for x
         binned <- temp %>%
-          mutate(Group = cut(x, breaks = pretty(x, 40), include.lowest = TRUE)) %>%
-          group_by(Group) %>%
-          summarise(y = mean(y),
-                    x = median(x),
-                    Count = n())
+          dplyr::mutate(Group = cut(x, breaks = pretty(x, 40), include.lowest = TRUE)) %>%
+          dplyr::group_by(Group) %>%
+          dplyr::summarise(y = mean(y),
+                           x = stats::median(x),
+                           Count = dplyr::n())
         if (length(unique(temp$x)) < 30) {
-          p <- qplot(data = temp, y = y, x = x, size = Freq,
-                     main = paste0(i, ".) ", names(df)[i], " (p-Wert=",
-                                   format(significance$P_Value[i], nsmall = 3),")"),
-                     xlab = names(df)[i]) +
-            geom_smooth(method = "loess") +
-            scale_x_continuous(breaks = pretty_breaks(6)) +
-            scale_y_continuous(breaks = pretty_breaks(6))
+          p <- ggplot2::qplot(data = temp, y = y, x = x, size = Freq,
+                              main = paste0(i, ".) ", names(df)[i], " (p-Wert=",
+                                            format(significance$P_Value[i], nsmall = 3),")"),
+                              xlab = names(df)[i]) +
+            ggplot2::geom_smooth(method = "loess") +
+            ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(6)) +
+            ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(6))
         } else {
-          p <- qplot(data = temp, y = y, x = x,
-                     main = paste0(i, ".) ", names(df)[i], " (p-Wert=",
-                                   format(significance$P_Value[i], nsmall = 3),")"),
-                     xlab = names(df)[i]) +
-            geom_smooth(method = "loess") +
-            scale_x_continuous(breaks = pretty_breaks(6)) +
-            scale_y_continuous(breaks = pretty_breaks(6))
+          p <- ggplot2::qplot(data = temp, y = y, x = x,
+                              main = paste0(i, ".) ", names(df)[i], " (p-Wert=",
+                                            format(significance$P_Value[i], nsmall = 3),")"),
+                              xlab = names(df)[i]) +
+            ggplot2::geom_smooth(method = "loess") +
+            ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(6)) +
+            ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(6))
         }
       }
     }
@@ -166,7 +172,7 @@ SR_univariate_analysis <- function(df, y_name,
     if (save) {
       graphic_name <- paste0(path_output, "Univariate/", i, ". ", y_name, " ~ ",
                              names(df)[i], ".png")
-      ggsave(graphic_name, plot = p, width = 9.92, height = 5.3)  # 4.67
+      ggplot2::ggsave(graphic_name, plot = p, width = 9.92, height = 5.3)  # 4.67
     }
   }  # next i
   #
@@ -174,17 +180,19 @@ SR_univariate_analysis <- function(df, y_name,
   significance$No <- NULL
   significance$Var <- as.factor(significance$Var)
   significance <- significance[order(significance$P_Value), ]
-  significance <- na.omit(significance)
+  significance <- stats::na.omit(significance)
   significance <- droplevels(significance)
-  q <- qplot(data = significance, y = reorder(Var, -P_Value), x = P_Value,
-             ylab = "Variable", xlim = c(0, 1))
+  q <- ggplot2::qplot(data = significance,
+                      y = stats::reorder(Var, -P_Value), x = P_Value,
+                      ylab = "Variable", xlim = c(0, 1))
   print(q)
   if (save) {
-    ggsave(paste0(path_output, "/Univariate/0. All Variables.png"),
-           plot = q, width = 9.92, height = 5.3)  # 4.67
-    write.table(significance,
-                file = paste0(path_output, "/Univariate/0. All Variables.csv"),
-                row.names = FALSE, col.names = TRUE, append = FALSE, sep = ";", dec = ",")
+    ggplot2::ggsave(paste0(path_output, "/Univariate/0. All Variables.png"),
+                    plot = q, width = 9.92, height = 5.3)  # 4.67
+    utils::write.table(significance,
+                       file = paste0(path_output, "/Univariate/0. All Variables.csv"),
+                       row.names = FALSE, col.names = TRUE, append = FALSE,
+                       sep = ";", dec = ",")
   }
   #
   return(invisible(NULL))

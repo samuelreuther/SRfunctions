@@ -21,3 +21,11 @@ Boolean value TRUE or FALSE
 \description{
 Generates different univariate plots for all variables in a data.frame vs. y
 }
+\examples{
+data("mtcars")
+SR_univariate_analysis(mtcars \%>\%
+                         dplyr::select(hp, cyl, mpg) \%>\%
+                         dplyr::mutate(cyl = as.factor(cyl)),
+                       y_name = "mpg", save = FALSE)
+
+}

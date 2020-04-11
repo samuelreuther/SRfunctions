@@ -26,3 +26,9 @@ matrix, prints 2 plots
 \description{
 Plots (1) the occurence of NAs and (2) correlation of them in a data.frame.
 }
+\examples{
+SR_NA_plot(df = data.frame(numeric = c(0, NA, 0.3, 0.5, NA, 1),
+                           character = c("a", "b", NA, "d", NA, "f"),
+                           integer = c(0L, NA, 3L, 5L, NA, 1L)))
+
+}

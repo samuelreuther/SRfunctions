@@ -14,9 +14,6 @@
 #'
 #' @export
 SR_join_check <- function(LHS = NULL, RHS = NULL) {
-  # load some libraries
-  suppressMessages(library(dplyr))
-  #
   # exit if error
   if (is.null(LHS) | is.null(RHS)) return(invisible(NULL))
   #
@@ -28,34 +25,60 @@ SR_join_check <- function(LHS = NULL, RHS = NULL) {
   for (i in col) {
     cat(i, ":\n")
     cat("No. rows: LHS       : ", nrow(LHS))
-    cat("  ( unique: ", nrow(LHS %>% ungroup() %>% select(one_of(i)) %>% distinct()), ")\n")
+    cat("  ( unique: ", nrow(LHS %>%
+                               dplyr::ungroup() %>%
+                               dplyr::select(dplyr::one_of(i)) %>%
+                               dplyr::distinct()), ")\n")
     cat("No. rows: RHS       : ", nrow(RHS))
-    cat("  ( unique: ", nrow(RHS %>% ungroup() %>% select(one_of(i)) %>% distinct()), ")\n")
+    cat("  ( unique: ", nrow(RHS %>%
+                               dplyr::ungroup() %>%
+                               dplyr::select(dplyr::one_of(i)) %>%
+                               dplyr::distinct()), ")\n")
     cat("No. rows: left_join : ",
-        LHS %>% ungroup() %>% select(one_of(i)) %>%
-          left_join(RHS %>% ungroup() %>% select(one_of(i)), by = i) %>%
-          # left_join(RHS %>% select(one_of(i)), by = i) %>%
+        LHS %>%
+          dplyr::ungroup() %>%
+          dplyr::select(dplyr::one_of(i)) %>%
+          dplyr::left_join(RHS %>%
+                             dplyr::ungroup() %>%
+                             dplyr::select(dplyr::one_of(i)), by = i) %>%
+          # dplyr::left_join(RHS %>% dplyr::select(dplyr::one_of(i)), by = i) %>%
           nrow(),
         "\n")
     cat("No. rows: right_join: ",
-        LHS %>% ungroup() %>% select(one_of(i)) %>%
-          right_join(RHS %>% ungroup() %>% select(one_of(i)), by = i) %>%
-          # left_join(RHS %>% select(one_of(i)), by = i) %>%
+        LHS %>%
+          dplyr::ungroup() %>%
+          dplyr::select(dplyr::one_of(i)) %>%
+          dplyr::right_join(RHS %>%
+                              dplyr::ungroup() %>%
+                              dplyr::select(dplyr::one_of(i)), by = i) %>%
+          # dplyr::left_join(RHS %>% dplyr::select(dplyr::one_of(i)), by = i) %>%
           nrow(),
         "\n")
     cat("No. rows: inner_join: ",
-        LHS %>% ungroup() %>% select(one_of(i)) %>%
-          inner_join(RHS %>% ungroup() %>% select(one_of(i)), by = i) %>%
+        LHS %>%
+          dplyr::ungroup() %>%
+          dplyr::select(dplyr::one_of(i)) %>%
+          dplyr::inner_join(RHS %>%
+                              dplyr::ungroup() %>%
+                              dplyr::select(dplyr::one_of(i)), by = i) %>%
           nrow(),
         "\n")
     cat("No. rows: full_join : ",
-        LHS %>% ungroup() %>% select(one_of(i)) %>%
-          full_join(RHS %>% ungroup() %>% select(one_of(i)), by = i) %>%
+        LHS %>%
+          dplyr::ungroup() %>%
+          dplyr::select(dplyr::one_of(i)) %>%
+          dplyr::full_join(RHS %>%
+                             dplyr::ungroup() %>%
+                             dplyr::select(dplyr::one_of(i)), by = i) %>%
           nrow(),
         "\n")
     cat("No. rows: anti_join : ",
-        LHS %>% ungroup() %>% select(one_of(i)) %>%
-          anti_join(RHS %>% ungroup() %>% select(one_of(i)), by = i) %>%
+        LHS %>%
+          dplyr::ungroup() %>%
+          dplyr::select(dplyr::one_of(i)) %>%
+          dplyr::anti_join(RHS %>%
+                             dplyr::ungroup() %>%
+                             dplyr::select(dplyr::one_of(i)), by = i) %>%
           nrow(),
         "\n")
   }
