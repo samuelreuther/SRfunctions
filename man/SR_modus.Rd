@@ -4,10 +4,12 @@
 \alias{SR_modus}
 \title{Calculate modus}
 \usage{
-SR_modus(x)
+SR_modus(x, method = 1)
 }
 \arguments{
 \item{x}{vector}
+
+\item{method}{integer (default = 1): different methods, with being 1 the fastest}
 }
 \value{
 character
