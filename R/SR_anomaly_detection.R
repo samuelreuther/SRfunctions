@@ -1,6 +1,6 @@
 # NOT RUN - Anomaly detection ---------------------------------------------
 #
-SR_anomaly_detection <- function() {
+# SR_anomaly_detection <- function() {
   # ## Run H2O model
   # p_load(h2o)
   # localH2O <- h2o.init(max_mem_size = "10g", nthreads = -1)
@@ -68,4 +68,4 @@ SR_anomaly_detection <- function() {
   # ## Outlier detection: MARS and trim the data with high leverage (Cook's D)
   #   - trimmen
   #   - use statistical model to predict values of outlier observation and after that we can impute it with predicted values.
-}
+# }
