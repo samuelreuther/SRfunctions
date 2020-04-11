@@ -8,7 +8,7 @@ SR_visualize_df <- function(df, sample = 1000, save = FALSE, df_name = "", no_gr
     df <- df %>% sample_n(sample)
   }
   try({
-    temp <- df %>% keep(is.numeric)
+    temp <- df %>% purrr::keep(is.numeric)
     if (nrow(temp) > 0 & ncol(temp) > 0) {
       for (i in 1:ceiling(ncol(temp) / no_graphs)) {
         if (length(((i - 1) * no_graphs + 1):min(i * no_graphs, ncol(temp))) == 1) {
@@ -31,7 +31,7 @@ SR_visualize_df <- function(df, sample = 1000, save = FALSE, df_name = "", no_gr
     rm(temp)
   }, TRUE)
   try({
-    temp <- df %>% keep(is.factor)
+    temp <- df %>% purrr::keep(is.factor)
     if (nrow(temp) > 0 & ncol(temp) > 0) {
       for (i in 1:ceiling(ncol(temp) / no_graphs)) {
         if (length(((i - 1) * no_graphs + 1):min(i * no_graphs, ncol(temp))) == 1) {
@@ -54,7 +54,7 @@ SR_visualize_df <- function(df, sample = 1000, save = FALSE, df_name = "", no_gr
     rm(temp)
   }, TRUE)
   try({
-    temp <- df %>% keep(is.character)
+    temp <- df %>% purrr::keep(is.character)
     if (nrow(temp) > 0 & ncol(temp) > 0) {
       for (i in 1:ceiling(ncol(temp) / no_graphs)) {
         if (length(((i - 1) * no_graphs + 1):min(i * no_graphs, ncol(temp))) == 1) {
@@ -77,7 +77,7 @@ SR_visualize_df <- function(df, sample = 1000, save = FALSE, df_name = "", no_gr
     rm(temp)
   }, TRUE)
   try({
-    temp <- df %>% keep(SR_is_date)
+    temp <- df %>% purrr::keep(SR_is_date)
     if (nrow(temp) > 0 & ncol(temp) > 0) {
       for (i in 1:ceiling(ncol(temp) / no_graphs)) {
         if (length(((i - 1) * no_graphs + 1):min(i * no_graphs, ncol(temp))) == 1) {

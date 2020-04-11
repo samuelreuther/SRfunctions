@@ -25,11 +25,11 @@ SR_correlation_plot <- function(df,
   #
   # select numeric, integer and date variables
   df2 <- df %>%
-    keep(SR_is_date) %>%
+    purrr::keep(SR_is_date) %>%
     sapply(as.numeric) %>%
     data.frame()
   df <- df %>%
-    keep(is.numeric)   # includes integer
+    purrr::keep(is.numeric)   # includes integer
   if (ncol(df2) > 0) df <- cbind(df, df2)
   rm(df2)
   #
