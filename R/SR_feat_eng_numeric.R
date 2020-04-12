@@ -1,3 +1,34 @@
+#' Feature engineering for variables of class "numeric"
+#'
+#' Lots of common feature engineering utilities.
+#'
+#' @param df data.frame
+#' @param trim_outliers boolean (default = FALSE): limit = 5 * standard deviation
+#' @param replace_NA_special_value boolean (default = FALSE): trying to find a special
+#'                                 value like -1, 1, or 999*
+#' @param replace_NA_median boolean (default = FALSE): alternative NA treatment,
+#'                          creates a separate column to flag NA existence
+#' @param log_scale_p1 boolean (default = FALSE): log_scale, i.e. if variable is skewed
+#' @param interactions boolean (default = FALSE): calculate variables with interactions
+#'                     with "_plus_", "_multi_", "_minus_", "_div_"
+#' @param folds_index boolean (default = NULL): not implemented atm
+#' @param exception character (default = NULL): except variables from feature engineering
+#' @param use_other_df character (default = NULL): use other provided data.frame
+#'                     for calculating statistics
+#'
+#' @return data.frame
+#'
+#' @examples
+#' df <- data.frame(var_numeric = c(1, 2, 2, 3, NA, 4),
+#'                  var_character = c("a", NA, "b", "c", "c", "d"),
+#'                  var_factor = factor(c("a", "b", "c", "c", "d", NA)),
+#'                  var_date = seq.Date(as.Date("2020-04-12"), by = "day", length.out = 6),
+#'                  stringsAsFactors = FALSE)
+#' SR_feat_eng_date(df)
+#' SR_feat_eng_date(df, only_date_to_numeric = FALSE)
+#' rm(df)
+#'
+#' @export
 SR_feat_eng_numeric <- function(df,
                                 trim_outliers = FALSE,
                                 replace_NA_special_value = FALSE,
