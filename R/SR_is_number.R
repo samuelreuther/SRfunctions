@@ -6,7 +6,7 @@
 #'
 #' @return Boolean value TRUE or FALSE
 #'
-#' @example
+#' @examples
 #' SR_is_number(42.2)
 #'
 #' @export

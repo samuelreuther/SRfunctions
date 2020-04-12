@@ -15,3 +15,7 @@ Boolean value TRUE or FALSE
 \description{
 check if object is.numeric(), is.integer() or SR_is_date()
 }
+\examples{
+SR_is_number(42.2)
+
+}

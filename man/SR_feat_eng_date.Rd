@@ -16,7 +16,8 @@ the month, day and weekday of date-variables are added as new columns}
 Boolean value TRUE or FALSE
 }
 \description{
-class "Date" is determined by function SR_is_date()
+Lots of common feature engineering utilities. Class "Date" is determined by
+function SR_is_date()
 }
 \examples{
 df <- data.frame(var_numeric = c(1, 2, 2, 3, NA, 4),

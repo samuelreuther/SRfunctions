@@ -1,6 +1,7 @@
 #' Feature engineering for rows
 #'
-#' currently most of the KPIs support only numeric variables.
+#' Lots of common feature engineering utilities. Currently most of the KPIs support
+#' only numeric variables.
 #'
 #' @param df data.frame
 #' @param row_count_na boolean (default = TRUE): all variables

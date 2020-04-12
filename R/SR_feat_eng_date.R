@@ -1,6 +1,7 @@
 #' Feature engineering for variables of class "Date"
 #'
-#' class "Date" is determined by function SR_is_date()
+#' Lots of common feature engineering utilities. Class "Date" is determined by
+#' function SR_is_date()
 #'
 #' @param df data.frame
 #' @param only_date_to_numeric boolean (default = TRUE): if FALSE then in addition

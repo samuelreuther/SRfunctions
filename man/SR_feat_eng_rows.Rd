@@ -33,7 +33,8 @@ SR_feat_eng_rows(
 data.frame
 }
 \description{
-currently most of the KPIs support only numeric variables.
+Lots of common feature engineering utilities. Currently most of the KPIs support
+only numeric variables.
 }
 \examples{
 df <- data.frame(var_numeric1 = c(-1, 0, 2, 3, NA, 4),

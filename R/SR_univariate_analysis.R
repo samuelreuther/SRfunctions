@@ -69,7 +69,7 @@ SR_univariate_analysis <- function(df, y_name,
     #
     # prepare data
     temp <- data.frame(y = y_temp[, 1], x = df[, i])
-    temp <- SR_feat_eng_factors(temp, make_na_explicit = TRUE)
+    temp <- SR_feat_eng_factors(temp, make_na_explicit = TRUE, label_encoding = FALSE)
     temp <- stats::na.omit(temp)
     # check if x = as.numeric(date)
     if (sum(is.na(as.Date(as.character(temp$x), format = "%Y%m%d"))) == 0) {
