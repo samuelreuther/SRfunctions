@@ -1,4 +1,24 @@
-SR_replace_umlaute <- function(df, cols = "") {
+#' Replace special characters in text
+#'
+#' Replaces the most common special characters.
+#'
+#' @param df data.frame
+#' @param cols character (default = TRUE): select columns explicitly
+#'
+#' @return data.frame
+#'
+#' @examples
+#' df <- data.frame(var_numeric = c(1, 2, 2, 3, NA, 4),
+#'                  var_character = c("a", NA, "b", "c", "c", "d"),
+#'                  var_factor = factor(c("a", "b", "c", "c", "d", NA)),
+#'                  var_date = seq.Date(as.Date("2020-04-12"), by = "day", length.out = 6),
+#'                  stringsAsFactors = FALSE)
+#' SR_replace_umlaute(df)
+#' rm(df)
+#'
+#' @export
+SR_replace_umlaute <- function(df,
+                               cols = "") {
   if (length(cols) == 1 & nchar(cols[1]) == 0) cols <- names(df)
   for (k in cols) {
     fc <- class(df[, k])[1] == "factor"
@@ -13,6 +33,7 @@ SR_replace_umlaute <- function(df, cols = "") {
     #
     df[, k] <- gsub("ô", "o", df[, k], fixed = TRUE)
     df[, k] <- gsub("é", "e", df[, k], fixed = TRUE)
+    df[, k] <- gsub("è", "e", df[, k], fixed = TRUE)
     #
     df[, k] <- gsub("Ã¤", "ae", df[, k], fixed = TRUE)
     df[, k] <- gsub("Ã'", "Ae", df[, k], fixed = TRUE)
