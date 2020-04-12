@@ -1,14 +1,48 @@
+#' Feature engineering for variables of class "factor" and "character"
+#'
+#' Lots of common feature engineering utilities.
+#'
+#' @param df data.frame
+#' @param order_weekday_month boolean (default = TRUE): put weekdays and month in
+#'                            natural order (factor levels, german and english)
+#' @param make_na_explicit boolean (default = TRUE): na_level = "Missing"
+#' @param replace_na_by_modus boolean (default = FALSE): alternative NA treatment
+#' @param label_encoding boolean (default = TRUE): not implemented atm
+#' @param count_encoding boolean (default = FALSE): not implemented atm
+#' @param rank_encoding boolean (default = FALSE): not implemented atm
+#' @param weighted_effect_coding boolean (default = FALSE): not implemented atm
+#' @param target_encoding boolean (default = FALSE): not implemented atm
+#' @param polynomial_encoding boolean (default = FALSE)
+#' @param combine_rare_levels boolean (default = TRUE)
+#' @param prop boolean (default = 0.01): required if 'combine_rare_levels = TRUE'
+#' @param folds_index boolean (default = NULL):
+#' @param use_other_df character (default = NULL): use other provided data.frame
+#'                     for calculating statistics
+#'
+#' @return data.frame
+#'
+#' @examples
+#' df <- data.frame(var_numeric = c(1, 2, 2, 3, NA, 4),
+#'                  var_character = c("a", NA, "b", "c", "c", "d"),
+#'                  var_factor = factor(c("a", "b", "c", "c", "d", NA)),
+#'                  var_date = seq.Date(as.Date("2020-04-12"), by = "day", length.out = 6),
+#'                  stringsAsFactors = FALSE)
+#' SR_feat_eng_date(df)
+#' SR_feat_eng_date(df, only_date_to_numeric = FALSE)
+#' rm(df)
+#'
+#' @export
 SR_feat_eng_factors <- function(df,
                                 order_weekday_month = TRUE,
-                                make_na_explicit = FALSE,
+                                make_na_explicit = TRUE,
                                 replace_na_by_modus = FALSE,
-                                label_encoding = FALSE,
+                                label_encoding = TRUE,
                                 count_encoding = FALSE,
                                 rank_encoding = FALSE,
-                                # weighted_effect_coding = FALSE,
+                                weighted_effect_coding = FALSE,
                                 target_encoding = FALSE,
                                 polynomial_encoding = FALSE,
-                                combine_rare_levels = FALSE, prop = NULL,
+                                combine_rare_levels = TRUE, prop = 0.01,
                                 folds_index = NULL,
                                 use_other_df = NULL) {
   #
@@ -23,7 +57,7 @@ SR_feat_eng_factors <- function(df,
   for (i in names(df)) {
     if (is.factor(df[, i]) | is.character(df[, i])) {
       #
-      ### order_weekday_month in natural order
+      ### order_weekday_month in natural order (factor levels)
       if (order_weekday_month) {
         # weekday german
         wd <- c("Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag",
@@ -187,5 +221,7 @@ SR_feat_eng_factors <- function(df,
     assign("factor_encoding", factor_encoding, envir = .GlobalEnv)
   }
   df <- droplevels(df)
+  #
+  # return result
   return(df)
 }
