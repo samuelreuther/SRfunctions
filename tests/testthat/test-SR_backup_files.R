@@ -5,3 +5,5 @@ test_that("class", {
                                      exclude = c("backup"))),
                "NULL")
 })
+
+unlink(paste0(getwd(), "/my_backup_folder"), recursive = TRUE, force = TRUE)
