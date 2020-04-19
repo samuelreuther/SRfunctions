@@ -37,6 +37,8 @@ Imports:
     stringi,
     DT,
     miniUI,
-    shiny
+    shiny,
+    Hmisc,
+    tibble
 VignetteBuilder: knitr
 RoxygenNote: 7.1.0
