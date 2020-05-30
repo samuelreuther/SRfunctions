@@ -49,7 +49,7 @@ SR_feat_eng_factors <- function(df,
   # https://www.slideshare.net/HJvanVeen/feature-engineering-72376750
   #
   ### initiate table for saving encodings
-  if (label_encoding & is.null(use_other_df)) {
+  if (label_encoding & is.null(use_other_df) & !exists("factor_encoding")) {
     factor_encoding <- data.frame(feature = NA, no = NA, levels = NA)
     factor_encoding <- stats::na.omit(factor_encoding)
   }
