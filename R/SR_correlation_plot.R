@@ -43,16 +43,16 @@ SR_correlation_plot <- function(df,
       cor_matrix_temp[i, i] <- NA
     }; rm(i)
     cor_max <- cor_matrix_temp %>%
-      summarise_all(~max(abs(.), na.rm = TRUE)) %>%
+      dplyr::summarise_all(~max(abs(.), na.rm = TRUE)) %>%
       t() %>%
       data.frame() %>%
-      setNames("cor_max") %>%
-      rownames_to_column() %>%
-      filter(cor_max >= cor_threshold)
+      stats::setNames("cor_max") %>%
+      tibble::rownames_to_column() %>%
+      dplyr::filter(cor_max >= cor_threshold)
     cor_matrix <- cor_matrix %>%
       data.frame() %>%
-      select(cor_max$rowname) %>%
-      filter(colnames(cor_matrix) %in% cor_max$rowname) %>%
+      dplyr::select(cor_max$rowname) %>%
+      dplyr::filter(colnames(cor_matrix) %in% cor_max$rowname) %>%
       # filter(rownames(.) %in% cor_max$rowname) %>%
       as.matrix(.)
     rownames(cor_matrix) <- cor_max$rowname
