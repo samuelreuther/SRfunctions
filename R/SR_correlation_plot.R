@@ -3,6 +3,7 @@
 #' Plot correlation of all numeric, integer and date variables of a data.frame.
 #'
 #' @param df data.frame
+#' @param cor_threshold numeric between 0 and 1
 #' @param save Boolean
 #' @param filename character, must end with "*png"
 #' @param path_output character
@@ -15,6 +16,7 @@
 #'
 #' @export
 SR_correlation_plot <- function(df,
+                                cor_threshold = NULL,
                                 save = FALSE, filename = "NA_Correlation.png",
                                 path_output = NULL) {
   # select numeric, integer and date variables
@@ -33,6 +35,28 @@ SR_correlation_plot <- function(df,
   # calculate correlation
   cor_matrix <- stats::cor(df, use = "pairwise.complete.obs")
   cor_matrix[is.na(cor_matrix)] <- 0
+  #
+  # remove variables with maximum correlations < cor_threshold
+  if (!is.null(cor_threshold)) {
+    cor_matrix_temp <- data.frame(cor_matrix)
+    for (i in 1:ncol(cor_matrix_temp)) {
+      cor_matrix_temp[i, i] <- NA
+    }; rm(i)
+    cor_max <- cor_matrix_temp %>%
+      summarise_all(~max(abs(.), na.rm = TRUE)) %>%
+      t() %>%
+      data.frame() %>%
+      setNames("cor_max") %>%
+      rownames_to_column() %>%
+      filter(cor_max >= cor_threshold)
+    cor_matrix <- cor_matrix %>%
+      data.frame() %>%
+      select(cor_max$rowname) %>%
+      filter(colnames(cor_matrix) %in% cor_max$rowname) %>%
+      # filter(rownames(.) %in% cor_max$rowname) %>%
+      as.matrix(.)
+    rownames(cor_matrix) <- cor_max$rowname
+  }
   #
   # corrplot
   if (save) {
