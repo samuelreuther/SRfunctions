@@ -6,6 +6,7 @@
 \usage{
 SR_correlation_plot(
   df,
+  cor_threshold = NULL,
   save = FALSE,
   filename = "NA_Correlation.png",
   path_output = NULL
@@ -13,6 +14,8 @@ SR_correlation_plot(
 }
 \arguments{
 \item{df}{data.frame}
+
+\item{cor_threshold}{numeric between 0 and 1}
 
 \item{save}{Boolean}
 
