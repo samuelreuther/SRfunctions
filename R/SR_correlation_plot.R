@@ -59,28 +59,31 @@ SR_correlation_plot <- function(df,
   }
   #
   # corrplot
-  if (save) {
-    grDevices::png(filename = paste0(path_output, filename),
-                   height = 1000, width = 1000)
-    if (sum(is.na(cor_matrix)) > 0) {
-      corrplot::corrplot(cor_matrix, method = "number",
-                         type = "lower", diag = FALSE, na.label = "-")
+  if (nrow(cor_matrix) <= 30) {
+    if (save) {
+      grDevices::png(filename = paste0(path_output, filename),
+                     height = 1000, width = 1000)
+      if (sum(is.na(cor_matrix)) > 0) {
+        corrplot::corrplot(cor_matrix, method = "number",
+                           type = "lower", diag = FALSE, na.label = "-")
+      } else {
+        corrplot::corrplot(cor_matrix, method = "number", order = "hclust",
+                           hclust.method = "ward.D2",
+                           type = "lower", diag = FALSE, na.label = "-")
+      }
+      try(grDevices::dev.off(), TRUE)
     } else {
-      corrplot::corrplot(cor_matrix, method = "number", order = "hclust",
-                         hclust.method = "ward.D2",
-                         type = "lower", diag = FALSE, na.label = "-")
+      if (sum(is.na(cor_matrix)) > 0) {
+        corrplot::corrplot(cor_matrix, method = "number",
+                           type = "lower", diag = FALSE, na.label = "-")
+      } else {
+        corrplot::corrplot(cor_matrix, method = "number", order = "hclust",
+                           hclust.method = "ward.D2",
+                           type = "lower", diag = FALSE, na.label = "-")
+      }
     }
-    try(grDevices::dev.off(), TRUE)
-  } else {
-    if (sum(is.na(cor_matrix)) > 0) {
-      corrplot::corrplot(cor_matrix, method = "number",
-                         type = "lower", diag = FALSE, na.label = "-")
-    } else {
-      corrplot::corrplot(cor_matrix, method = "number", order = "hclust",
-                         hclust.method = "ward.D2",
-                         type = "lower", diag = FALSE, na.label = "-")
-    }
-    # corrplot.mixed(cor_matrix)
-    assign("cor_matrix", cor_matrix, envir = .GlobalEnv)
   }
+  #
+  # corrplot.mixed(cor_matrix)
+  assign("cor_matrix", cor_matrix, envir = .GlobalEnv)
 }
