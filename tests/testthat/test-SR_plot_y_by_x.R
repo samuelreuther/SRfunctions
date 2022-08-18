@@ -11,3 +11,4 @@ test_that("x factor, y numeric", {
                               x = "hp", y = "mpg"),
                NULL)
 })
+
