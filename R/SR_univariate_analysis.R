@@ -118,11 +118,18 @@ SR_univariate_analysis <- function(df, y_name,
         # calculate significance ANOVA
         significance$P_Value[i] <-
           round(summary(stats::aov(temp$x ~ temp$y))[[1]][["Pr(>F)"]][[1]], rounding)
-        p <- ggplot2::qplot(data = temp, x = x, geom = "density", color = y,
-                            main = paste0(i, ".) ", names(df)[i], " (p-Wert=",
-                                          format(significance$P_Value[i], nsmall = 3),")"),
-                            xlab = names(df)[i]) +
-          ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(6))
+        p <- ggplot2::ggplot(data = temp,
+                             ggplot2::aes(x = x, geom = "density", color = y)) +
+          ggplot2::geom_density() +
+          ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(6)) +
+          ggplot2::labs(title = paste0(i, ".) ", names(df)[i], " (p-Wert=",
+                                       format(significance$P_Value[i], nsmall = 3),")"),
+                        x = names(df)[i])
+        # p <- ggplot2::qplot(data = temp, x = x, geom = "density", color = y,
+        #                     main = paste0(i, ".) ", names(df)[i], " (p-Wert=",
+        #                                   format(significance$P_Value[i], nsmall = 3),")"),
+        #                     xlab = names(df)[i]) +
+        #   ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(6))
       }
     } else {
       if (is.factor(temp$x)) {
@@ -130,13 +137,21 @@ SR_univariate_analysis <- function(df, y_name,
         # calculate significance ANOVA
         significance$P_Value[i] <-
           round(summary(stats::aov(temp$y ~ temp$x))[[1]][["Pr(>F)"]][[1]], rounding)
-        p <- ggplot2::qplot(data = temp, y = y, x = x, geom = "jitter",
-                            main = paste0(i, ".) ", names(df)[i], " (p-Wert=",
-                                          format(significance$P_Value[i], nsmall = 3),")"),
-                            xlab = names(df)[i]) +
+        p <- ggplot2::ggplot(data = temp, ggplot2::aes(x = x, y = y)) +
+          ggplot2::geom_jitter() +
           ggplot2::stat_summary(fun = "mean", fun.min = "mean", fun.max = "mean",
-                                size = 0.3, geom = "crossbar", colour = "blue") +
-          ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(6))
+                                linewidth = 0.3, geom = "crossbar", colour = "blue") +
+          ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(6)) +
+          ggplot2::labs(title = paste0(i, ".) ", names(df)[i], " (p-Wert=",
+                                       format(significance$P_Value[i], nsmall = 3),")"),
+                        x = names(df)[i])
+        # p <- ggplot2::qplot(data = temp, y = y, x = x, geom = "jitter",
+        #                     main = paste0(i, ".) ", names(df)[i], " (p-Wert=",
+        #                                   format(significance$P_Value[i], nsmall = 3),")"),
+        #                     xlab = names(df)[i]) +
+        #   ggplot2::stat_summary(fun = "mean", fun.min = "mean", fun.max = "mean",
+        #                         linewidth = 0.3, geom = "crossbar", colour = "blue") +
+        #   ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(6))
       } else {
         # y: numeric   x: numeric
         # calculate significance ANOVA
@@ -150,25 +165,43 @@ SR_univariate_analysis <- function(df, y_name,
                            x = stats::median(x),
                            Count = dplyr::n())
         if (length(unique(temp$x)) < 30) {
-          p <- ggplot2::qplot(data = temp, y = y, x = x, size = Freq,
-                              main = paste0(i, ".) ", names(df)[i], " (p-Wert=",
-                                            format(significance$P_Value[i], nsmall = 3),")"),
-                              xlab = names(df)[i]) +
+          p <- ggplot2::ggplot(data = temp, ggplot2::aes(x = x, y = y, size = Freq)) +
+            ggplot2::geom_point() +
             ggplot2::geom_smooth(method = "loess") +
             ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(6)) +
-            ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(6))
+            ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(6)) +
+            ggplot2::labs(title = paste0(i, ".) ", names(df)[i], " (p-Wert=",
+                                         format(significance$P_Value[i], nsmall = 3),")"),
+                          x = names(df)[i])
+          # p <- ggplot2::qplot(data = temp, y = y, x = x, size = Freq,
+          #                     main = paste0(i, ".) ", names(df)[i], " (p-Wert=",
+          #                                   format(significance$P_Value[i], nsmall = 3),")"),
+          #                     xlab = names(df)[i]) +
+          #   ggplot2::geom_smooth(method = "loess") +
+          #   ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(6)) +
+          #   ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(6))
         } else {
-          p <- ggplot2::qplot(data = temp, y = y, x = x,
-                              main = paste0(i, ".) ", names(df)[i], " (p-Wert=",
-                                            format(significance$P_Value[i], nsmall = 3),")"),
-                              xlab = names(df)[i]) +
+          p <- ggplot2::ggplot(data = temp, ggplot2::aes(x = x, y = y)) +
+            ggplot2::geom_point() +
             ggplot2::geom_smooth(method = "loess") +
             ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(6)) +
-            ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(6))
+            ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(6)) +
+            ggplot2::labs(title = paste0(i, ".) ", names(df)[i], " (p-Wert=",
+                                         format(significance$P_Value[i], nsmall = 3),")"),
+                          x = names(df)[i])
+          # p <- ggplot2::qplot(data = temp, y = y, x = x,
+          #                     main = paste0(i, ".) ", names(df)[i], " (p-Wert=",
+          #                                   format(significance$P_Value[i], nsmall = 3),")"),
+          #                     xlab = names(df)[i]) +
+          #   ggplot2::geom_smooth(method = "loess") +
+          #   ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(6)) +
+          #   ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(6))
         }
       }
     }
-    print(p)
+    suppressWarnings({   # strange warning since ggplot2 3.4.0
+      print(p)
+    })
     if (save) {
       graphic_name <- paste0(path_output, "Univariate/", i, ". ", y_name, " ~ ",
                              names(df)[i], ".png")
@@ -182,9 +215,14 @@ SR_univariate_analysis <- function(df, y_name,
   significance <- significance[order(significance$P_Value), ]
   significance <- stats::na.omit(significance)
   significance <- droplevels(significance)
-  q <- ggplot2::qplot(data = significance,
-                      y = stats::reorder(Var, -P_Value), x = P_Value,
-                      ylab = "Variable", xlim = c(0, 1))
+  q <- ggplot2::ggplot(data = significance,
+                       ggplot2::aes(x = P_Value, y = stats::reorder(Var, -P_Value))) +
+    ggplot2::geom_point() +
+    ggplot2::scale_x_continuous(limits = c(0, 1)) +
+    ggplot2::labs(y = "Variable")
+  # q <- ggplot2::qplot(data = significance,
+  #                     y = stats::reorder(Var, -P_Value), x = P_Value,
+  #                     ylab = "Variable", xlim = c(0, 1))
   print(q)
   if (save) {
     ggplot2::ggsave(paste0(path_output, "/Univariate/0. All Variables.png"),

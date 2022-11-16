@@ -26,10 +26,11 @@ SR_NA_plot <- function(df,
   rownames(missings) <- NULL
   #
   # plot NAs
-  a <- ggplot2::qplot(NAs_in_p, stats::reorder(VarName, NAs), data = missings,
-                      ylab = "Variable") +
-    ggplot2::scale_x_continuous(labels = scales::percent, limits = c(0,1)) +
-    ggplot2::xlab("Anteil NAs pro Variable")
+  a <- ggplot2::ggplot(data = missings,
+                       ggplot2::aes(x = NAs_in_p, y = stats::reorder(VarName, NAs))) +
+    ggplot2::geom_point() +
+    ggplot2::scale_x_continuous(labels = scales::percent, limits = c(0, 1)) +
+    ggplot2::labs(x = "Anteil NAs pro Variable", y = "Variable")
   print(a)
   if (save) {
     try(ggplot2::ggsave(paste0(path_output, filename), plot = a, width = 9.92, height = 5.3))

@@ -42,32 +42,53 @@ SR_plot_y_by_x <- function(df, x_name, y_name,
       # SR_mosaicplot(var1 = temp$x_name, var2 = temp$y)
     } else {
       # y: factor x: numeric
-      p <- ggplot2::qplot(data = temp, x = x, geom = "density", color = y) +
-        ggplot2::labs(title = x_name, x = x_name, colour = y_name) +
-        ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(5))
+      p <- ggplot2::ggplot(data = temp, ggplot2::aes(x = x, color = y)) +
+        ggplot2::geom_density() +
+        ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(5)) +
+        ggplot2::labs(title = x_name, x = x_name, colour = y_name)
+      # p <- ggplot2::qplot(data = temp, x = x, geom = "density", color = y) +
+      #   ggplot2::labs(title = x_name, x = x_name, colour = y_name) +
+      #   ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(5))
     }
   } else {
     if (is.factor(temp$x)) {     # y: numeric   x: factor
-      p <- ggplot2::qplot(data = temp, y = y, x = x, geom = "jitter") +
-        ggplot2::labs(title = x_name, x = x_name, y = y_name) +
+      p <- ggplot2::ggplot(data = temp, ggplot2::aes(x = x, y = y)) +
+        ggplot2::geom_jitter() +
         ggplot2::stat_summary(fun = "mean", fun.min = "mean", fun.max = "mean",
                               size = 0.3, geom = "crossbar", colour = "blue") +
-        ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(5))
+        ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(5)) +
+        ggplot2::labs(title = x_name, x = x_name, y = y_name)
+      # p <- ggplot2::qplot(data = temp, y = y, x = x, geom = "jitter") +
+      #   ggplot2::labs(title = x_name, x = x_name, y = y_name) +
+      #   ggplot2::stat_summary(fun = "mean", fun.min = "mean", fun.max = "mean",
+      #                         size = 0.3, geom = "crossbar", colour = "blue") +
+      #   ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(5))
     } else {
       # y: numeric x: numeric
       if (length(unique(temp$x)) < 100) {
-        p <- ggplot2::qplot(data = temp, y = y, x = x) +
+        p <- ggplot2::ggplot(data = temp, ggplot2::aes(x = x, y = y)) +
           ggplot2::geom_count() +
-          ggplot2::labs(title = x_name, x = x_name, y = y_name) +
           ggplot2::geom_smooth(method = "loess") +
           ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(5)) +
-          ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(5))
+          ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(5)) +
+          ggplot2::labs(title = x_name, x = x_name, y = y_name)
+        # p <- ggplot2::qplot(data = temp, y = y, x = x) +
+        #   ggplot2::geom_count() +
+        #   ggplot2::labs(title = x_name, x = x_name, y = y_name) +
+        #   ggplot2::geom_smooth(method = "loess") +
+        #   ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(5)) +
+        #   ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(5))
       } else {
-        p <- ggplot2::qplot(data = temp, y = y, x = x) +
+        p <- ggplot2::ggplot(data = temp, ggplot2::aes(x = x, y = y)) +
           ggplot2::geom_smooth(method = "loess") +
-          ggplot2::labs(title = x_name, x = x_name, y = y_name) +
           ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(5)) +
-          ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(5))
+          ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(5)) +
+          ggplot2::labs(title = x_name, x = x_name, y = y_name)
+        # p <- ggplot2::qplot(data = temp, y = y, x = x) +
+        #   ggplot2::geom_smooth(method = "loess") +
+        #   ggplot2::labs(title = x_name, x = x_name, y = y_name) +
+        #   ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(5)) +
+        #   ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(5))
       }
     }
   }
