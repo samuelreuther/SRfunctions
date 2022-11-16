@@ -50,7 +50,7 @@ SR_plot_y_by_x <- function(df, x_name, y_name,
     if (is.factor(temp$x)) {     # y: numeric   x: factor
       p <- ggplot2::qplot(data = temp, y = y, x = x, geom = "jitter") +
         ggplot2::labs(title = x_name, x = x_name, y = y_name) +
-        ggplot2::stat_summary(fun.y = "mean", fun.ymin = "mean", fun.ymax = "mean",
+        ggplot2::stat_summary(fun = "mean", fun.min = "mean", fun.max = "mean",
                               size = 0.3, geom = "crossbar", colour = "blue") +
         ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(5))
     } else {

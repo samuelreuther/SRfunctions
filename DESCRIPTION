@@ -1,6 +1,6 @@
 Package: SRfunctions
 Title: Several utilities and functions
-Version: 0.3.0
+Version: 0.3.1
 Authors@R: 
     person(given = "Samuel",
            family = "Reuther",

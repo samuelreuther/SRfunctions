@@ -134,7 +134,7 @@ SR_univariate_analysis <- function(df, y_name,
                             main = paste0(i, ".) ", names(df)[i], " (p-Wert=",
                                           format(significance$P_Value[i], nsmall = 3),")"),
                             xlab = names(df)[i]) +
-          ggplot2::stat_summary(fun.y = "mean", fun.ymin = "mean", fun.ymax = "mean",
+          ggplot2::stat_summary(fun = "mean", fun.min = "mean", fun.max = "mean",
                                 size = 0.3, geom = "crossbar", colour = "blue") +
           ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(6))
       } else {

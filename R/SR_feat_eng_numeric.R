@@ -38,7 +38,7 @@ SR_feat_eng_numeric <- function(df,
                                 folds_index = NULL,
                                 exception = NULL,
                                 use_other_df = NULL) {
-  if (class(df) != "data.frame") df <- data.frame(df)
+  if (class(df)[1] != "data.frame") df <- data.frame(df)
   for (i in 1:ncol(df)) {
     if (is.numeric(df[, i]) | sapply(df[, i], class)[[1]] == "numeric") {
       j <- names(df)[i]
