@@ -55,7 +55,7 @@ SR_plot_y_by_x <- function(df, x_name, y_name,
       p <- ggplot2::ggplot(data = temp, ggplot2::aes(x = x, y = y)) +
         ggplot2::geom_jitter() +
         ggplot2::stat_summary(fun = "mean", fun.min = "mean", fun.max = "mean",
-                              size = 0.3, geom = "crossbar", colour = "blue") +
+                              linewidth = 0.3, geom = "crossbar", colour = "blue") +
         ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(5)) +
         ggplot2::labs(title = x_name, x = x_name, y = y_name)
       # p <- ggplot2::qplot(data = temp, y = y, x = x, geom = "jitter") +
@@ -68,24 +68,24 @@ SR_plot_y_by_x <- function(df, x_name, y_name,
       if (length(unique(temp$x)) < 100) {
         p <- ggplot2::ggplot(data = temp, ggplot2::aes(x = x, y = y)) +
           ggplot2::geom_count() +
-          ggplot2::geom_smooth(method = "loess") +
+          ggplot2::geom_smooth(method = "loess", formula = 'y ~ x') +
           ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(5)) +
           ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(5)) +
           ggplot2::labs(title = x_name, x = x_name, y = y_name)
         # p <- ggplot2::qplot(data = temp, y = y, x = x) +
         #   ggplot2::geom_count() +
         #   ggplot2::labs(title = x_name, x = x_name, y = y_name) +
-        #   ggplot2::geom_smooth(method = "loess") +
+        #   ggplot2::geom_smooth(method = "loess", formula = 'y ~ x') +
         #   ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(5)) +
         #   ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(5))
       } else {
         p <- ggplot2::ggplot(data = temp, ggplot2::aes(x = x, y = y)) +
-          ggplot2::geom_smooth(method = "loess") +
+          ggplot2::geom_smooth(method = "loess", formula = 'y ~ x') +
           ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(5)) +
           ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(5)) +
           ggplot2::labs(title = x_name, x = x_name, y = y_name)
         # p <- ggplot2::qplot(data = temp, y = y, x = x) +
-        #   ggplot2::geom_smooth(method = "loess") +
+        #   ggplot2::geom_smooth(method = "loess", formula = 'y ~ x') +
         #   ggplot2::labs(title = x_name, x = x_name, y = y_name) +
         #   ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(5)) +
         #   ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(5))
