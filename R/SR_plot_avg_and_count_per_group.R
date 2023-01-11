@@ -80,12 +80,15 @@ SR_plot_avg_and_count_per_group <- function(df,
   #
   scale <- max(df_stats$COUNT) / max(df_stats$AVG)
   scale <- dplyr::if_else(scale < 0.5, scale, round(scale))
-  scale <- dplyr::case_when(round(scale, -nchar(scale)) == 0 ~ round(scale, -nchar(scale) + 1),
-                            round(scale * 10)    > 0 ~ round(scale, 1),
-                            round(scale * 100)   > 0 ~ round(scale, 2),
-                            round(scale * 1000)  > 0 ~ round(scale, 3),
-                            round(scale * 10000) > 0 ~ round(scale, 4),
-                            T                        ~ round(scale, -nchar(scale)))
+scale <- dplyr::case_when(round(scale, -nchar(scale)) == 0 ~
+                            round(scale, -nchar(scale) + 1),
+                          round(scale, -nchar(scale)) > 0 ~
+                            round(scale, -nchar(scale)),
+                          round(scale * 10)    > 0 ~ round(scale, 1),
+                          round(scale * 100)   > 0 ~ round(scale, 2),
+                          round(scale * 1000)  > 0 ~ round(scale, 3),
+                          round(scale * 10000) > 0 ~ round(scale, 4),
+                          T                        ~ scale)
   #
   #
   #
