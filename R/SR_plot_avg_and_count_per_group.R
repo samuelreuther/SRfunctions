@@ -121,12 +121,12 @@ SR_plot_avg_and_count_per_group <- function(df,
                                                                   column_name, "' (blau)"),
                                                     breaks = scales::pretty_breaks(6),
                                                     labels = scales::format_format(big.mark = "'"))) +
-    ggplot2::labs(title = dplyr::if_else(is.null(title),
-                                         paste0("Anzahlen (graue Säule) und ",
-                                                "Durchschnittswerte (blau) von '",
-                                                column_name, "' pro Kategorie von '",
-                                                group_cat),
-                                         title),
+    ggplot2::labs(title = ifelse(is.null(title),
+                                 paste0("Anzahlen (graue Säule) und ",
+                                        "Durchschnittswerte (blau) von '",
+                                        column_name, "' pro Kategorie von '",
+                                        group_cat),
+                                 title),
                   x = group_cat)
   #
   #

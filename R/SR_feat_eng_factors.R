@@ -87,7 +87,8 @@ SR_feat_eng_factors <- function(df,
       #
       ### make_na_explicit
       if (make_na_explicit & sum(is.na(df[, i])) > 0) {
-        df[, i] <- forcats::fct_explicit_na(df[, i], na_level = "Missing")
+        df[, i] <- forcats::fct_na_value_to_level(df[, i], level = "Missing")
+        # df[, i] <- forcats::fct_explicit_na(df[, i], na_level = "Missing")
       }
       #
       ### replace_na_by_modus
@@ -113,7 +114,8 @@ SR_feat_eng_factors <- function(df,
             suppressWarnings(df[, i] <- forcats::fct_other(df[, i], keep = levels(df[, i]),
                                                            other_level = "Other"))
             # df[, i] <- forcats::fct_other(df[, i], keep = levels(df[, i]), other_level = "Other")
-            df[, i] <- forcats::fct_explicit_na(df[, i], na_level = "Other")
+            df[, i] <- forcats::fct_na_value_to_level(df[, i], level = "Other")
+            # df[, i] <- forcats::fct_explicit_na(df[, i], na_level = "Other")
             # suppressWarnings(df[, i][is.na(df[, i])] <- "Other")
           }
         }
@@ -142,7 +144,8 @@ SR_feat_eng_factors <- function(df,
           if (sum(is.na(df[, i])) > 0) {
             suppressWarnings(df[, i] <- forcats::fct_other(df[, i], keep = levels(df[, i]),
                                                            other_level = "Other"))
-            df[, i] <- forcats::fct_explicit_na(df[, i], na_level = "Other")
+            df[, i] <- forcats::fct_na_value_to_level(df[, i], level = "Other")
+            # df[, i] <- forcats::fct_explicit_na(df[, i], na_level = "Other")
           }
           # if (is.character(df[, i])) {
           #   df[, i] <- factor(df[, i], levels = levels(use_other_df[, i]))
