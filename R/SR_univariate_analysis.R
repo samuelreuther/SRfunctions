@@ -167,7 +167,7 @@ SR_univariate_analysis <- function(df, y_name,
         if (length(unique(temp$x)) < 30) {
           p <- ggplot2::ggplot(data = temp, ggplot2::aes(x = x, y = y, size = Freq)) +
             ggplot2::geom_point() +
-            ggplot2::geom_smooth(method = "loess") +
+            ggplot2::geom_smooth(method = "loess", formula = "y ~ x") +
             ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(6)) +
             ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(6)) +
             ggplot2::labs(title = paste0(i, ".) ", names(df)[i], " (p-Wert=",
@@ -177,13 +177,13 @@ SR_univariate_analysis <- function(df, y_name,
           #                     main = paste0(i, ".) ", names(df)[i], " (p-Wert=",
           #                                   format(significance$P_Value[i], nsmall = 3),")"),
           #                     xlab = names(df)[i]) +
-          #   ggplot2::geom_smooth(method = "loess") +
+          #   ggplot2::geom_smooth(method = "loess", formula = "y ~ x") +
           #   ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(6)) +
           #   ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(6))
         } else {
           p <- ggplot2::ggplot(data = temp, ggplot2::aes(x = x, y = y)) +
             ggplot2::geom_point() +
-            ggplot2::geom_smooth(method = "loess") +
+            ggplot2::geom_smooth(method = "loess", formula = "y ~ x") +
             ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(6)) +
             ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(6)) +
             ggplot2::labs(title = paste0(i, ".) ", names(df)[i], " (p-Wert=",
@@ -193,7 +193,7 @@ SR_univariate_analysis <- function(df, y_name,
           #                     main = paste0(i, ".) ", names(df)[i], " (p-Wert=",
           #                                   format(significance$P_Value[i], nsmall = 3),")"),
           #                     xlab = names(df)[i]) +
-          #   ggplot2::geom_smooth(method = "loess") +
+          #   ggplot2::geom_smooth(method = "loess", formula = "y ~ x") +
           #   ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(6)) +
           #   ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(6))
         }
