@@ -112,6 +112,8 @@ SR_plot_avg_and_count_per_group <- function(df,
                           size = 4, colour = "steelblue")} +
     {if (class(df_stats[[group_cat]]) %in% c("character", "factor"))
       ggplot2::scale_x_discrete(labels = scales::wrap_format(20))} +
+    # {if (!class(df_stats[[group_cat]]) %in% c("character", "factor"))
+    #   ggplot2::scale_x_continuous(labels = scales::pretty_breaks(6))} +  # not working because of calculate_stats
     ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(6),
                                 name = "Anzahl Daten (Säule)",
                                 labels = scales::format_format(big.mark = "'"),
