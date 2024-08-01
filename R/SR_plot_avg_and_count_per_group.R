@@ -62,14 +62,14 @@ SR_plot_avg_and_count_per_group <- function(df,
       dplyr::group_by(.data[[group_cat]]) %>%
       dplyr::summarise(AVG = mean(.data[[column_name]], na.rm = TRUE),
                        COUNT = dplyr::n()) %>%
-      dplyr:: mutate(AVG =
-                       dplyr::case_when(median(AVG, na.rm = TRUE) >= 1000     ~ round(AVG, 0),
-                                        median(AVG, na.rm = TRUE) >=  100     ~ round(AVG, 1),
-                                        median(AVG, na.rm = TRUE) >=   10     ~ round(AVG, 2),
-                                        median(AVG, na.rm = TRUE) >=    1     ~ round(AVG, 3),
-                                        median(AVG, na.rm = TRUE) >=    0.1   ~ round(AVG, 4),
-                                        median(AVG, na.rm = TRUE) >=    0.01  ~ round(AVG, 5),
-                                        median(AVG, na.rm = TRUE) >=    0.001 ~ round(AVG, 6)))
+      dplyr:: mutate(AVG = dplyr::case_when(
+        abs(median(AVG, na.rm = TRUE)) >= 1000     ~ round(AVG, 0),
+        abs(median(AVG, na.rm = TRUE)) >=  100     ~ round(AVG, 1),
+        abs(median(AVG, na.rm = TRUE)) >=   10     ~ round(AVG, 2),
+        abs(median(AVG, na.rm = TRUE)) >=    1     ~ round(AVG, 3),
+        abs(median(AVG, na.rm = TRUE)) >=    0.1   ~ round(AVG, 4),
+        abs(median(AVG, na.rm = TRUE)) >=    0.01  ~ round(AVG, 5),
+        abs(median(AVG, na.rm = TRUE)) >=    0.001 ~ round(AVG, 6)))
   } else {
     df_stats <- df
   }
