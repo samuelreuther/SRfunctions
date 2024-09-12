@@ -32,7 +32,8 @@ SR_difftime_years <- function(enddate,
     # calculate years
     dplyr::mutate(years = lubridate::interval(start_, end_) / lubridate::years(1)) %>%
     dplyr::mutate(years_ = floor(years)) %>%
-    dplyr::mutate(start__ = start_ %m+% lubridate::years(years_),
+    dplyr::mutate(start__ = start_ %>%
+                    lubridate::add_with_rollback(lubridate::years(years_)),
                   start_is_leap =
                     ifelse(lubridate::year(start__) %% 400 == 0,
                            TRUE,
