@@ -32,45 +32,24 @@ SR_difftime_years <- function(enddate,
     # calculate years
     dplyr::mutate(years = lubridate::interval(start_, end_) / lubridate::years(1)) %>%
     dplyr::mutate(years_ = floor(years)) %>%
-    # dplyr::mutate(years_ = ifelse(negative, ceiling(years), floor(years))) %>%
-    # dplyr::mutate(years = lubridate::year(end_) -
-    #          lubridate::year(start_) -
-    #          pmax(lubridate::month(end_) < lubridate::month(start_),
-    #               lubridate::month(end_) == lubridate::month(start_) &
-    #                 lubridate::mday(end_) < lubridate::mday(start_)))
-    # dplyr::mutate(years = lubridate::year(start_) - lubridate::year(end_))
-    # years <- lubridate::time_length(lubridate::interval(start_, end_), "years")
-    # years <- ifelse(negative_sign, ceiling(years), floor(years))
-    # calculate fraction of year
-    dplyr::mutate(start_is_leap =
-                    ifelse(lubridate::year(start_) %% 400 == 0,
+    dplyr::mutate(start__ = start_ + lubridate::years(years_),
+                  start_is_leap =
+                    ifelse(lubridate::year(start__) %% 400 == 0,
                            TRUE,
-                           ifelse(lubridate::year(start_) %% 100 == 0,
+                           ifelse(lubridate::year(start__) %% 100 == 0,
                                   FALSE,
-                                  ifelse(lubridate::year(start_) %% 4 == 0, TRUE, FALSE))),
+                                  ifelse(lubridate::year(start__) %% 4 == 0, TRUE, FALSE))),
                   end_is_leap =
                     ifelse(lubridate::year(end_) %% 400 == 0, TRUE,
                            ifelse(lubridate::year(end_) %% 100 == 0,
                                   FALSE,
                                   ifelse(lubridate::year(end_) %% 4 == 0, TRUE, FALSE))),
-                  start_length = ifelse(start_is_leap, 366, 365),
-                  end_length = ifelse(end_is_leap, 366, 365),
-                  start_day = ifelse(start_is_leap & lubridate::yday(start_) >= 60,
-                                     lubridate::yday(start_) - 1,
-                                     lubridate::yday(start_)),
-                  end_day = ifelse(end_is_leap & lubridate::yday(end_) >= 60,
-                                   lubridate::yday(end_) - 1,
-                                   lubridate::yday(end_)),
-                  year_frac = ifelse(start_day < end_day,
-                                     (end_day - start_day) / end_length,
-                                     ifelse(start_day > end_day,
-                                            (start_length - start_day) / start_length +
-                                              end_day / end_length,
-                                            0.0))) %>%
+                  length = ifelse(start_is_leap | end_is_leap, 366, 365),
+                  diff_days = as.numeric(difftime(end_, start__, units = "days")),
+                  year_frac = diff_days / length) %>%
     # combine results
     dplyr::mutate(years_diff = ifelse(negative,
                                       -(years_ + year_frac), years_ + year_frac))
   #
   return(df$years_diff)
 }
-
