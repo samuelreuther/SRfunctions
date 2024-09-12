@@ -17,7 +17,7 @@ test_that("several dates", {
   expect_equal(round(SR_difftime_years(enddate = "2023-11-30",
                                        startdate = c("2023-11-29", "2023-11-30", "2023-12-01",
                                                      "2024-11-29", "2024-11-30", "2024-12-01")), 6),
-               c(0.002740, 0.000000, -0.002740, -0.994768, -1.000000, -1.002732))
+               c(0.002740, 0.000000, -0.002740, -0.997268, -1.000000, -1.002732))
 })
 
 # test_that("df", {
@@ -70,4 +70,6 @@ test_that("several dates", {
 # SR_difftime_years("2023-11-30", "2023-11-29")
 # SR_difftime_years("2024-11-30", "2024-11-29")
 # SR_difftime_years("2025-11-30", "2025-11-29")
+#
+# round(SR_difftime_years(enddate = "2023-11-30", startdate = "1992-12-01"), 4)
 
