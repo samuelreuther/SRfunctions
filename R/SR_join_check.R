@@ -23,6 +23,13 @@ SR_join_check <- function(LHS = NULL, RHS = NULL) {
   # show result of joins
   if (length(col) == 0) cat("No identical column names found :(")
   for (i in col) {
+    # check if it is a useful ID for join check (skip column if duplicated values)
+    if (LHS %>%
+        dplyr::ungroup() %>%
+        dplyr::select(dplyr::one_of(i)) %>%
+        dplyr::distinct() %>%
+        nrow() < nrow(LHS) / 10) next()
+    # print check results
     cat(i, ":\n")
     cat("No. rows: LHS       : ", nrow(LHS))
     cat("  ( unique: ", nrow(LHS %>%
