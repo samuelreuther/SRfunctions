@@ -79,7 +79,6 @@ SR_feat_eng_numeric <- function(df,
       #
       # log_scale, i.e. if variable is skewed
       if (log_scale_p1 & !grepl("_LabelEnc", j)) {
-        # pacman::p_load(moments)
         if (moments::skewness(df[, j]) > 2) {
           df[, ] <- log(df[, j] + 1)
         }

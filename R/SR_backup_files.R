@@ -45,7 +45,6 @@ SR_backup_files <- function(path_from = NULL,
   for (i in seq_along(files_from)) {
     e <- try(nchar(files_from[i]), silent = TRUE)
     if (methods::is(e, "try-error")) {
-      # pacman::p_load(stringi)
       files_from[i] <- files_from[i] %>%
         stringi::stri_enc_toutf8(.) %>%
         stringi::stri_unescape_unicode(.) # %>%

@@ -21,7 +21,6 @@ Imports:
     ggplot2,
     Metrics,
     rstudioapi,
-    pacman,
     methods,
     forcats,
     scales,
@@ -31,13 +30,9 @@ Imports:
     magrittr,
     grDevices,
     data.table,
-    reshape2,
     tidyr,
     moments,
     stringi,
-    DT,
-    miniUI,
-    shiny,
     Hmisc,
     tibble
 VignetteBuilder: knitr

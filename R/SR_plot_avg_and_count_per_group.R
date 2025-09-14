@@ -118,7 +118,7 @@ SR_plot_avg_and_count_per_group <- function(df,
                                 name = "Anzahl Daten (Säule)",
                                 labels = scales::format_format(big.mark = "'"),
                                 sec.axis =
-                                  ggplot2::sec_axis(trans = ~. / scale,
+                                  ggplot2::sec_axis(transform = ~. / scale,
                                                     name = paste0("Durchschnittswerte von '",
                                                                   column_name, "' (blau)"),
                                                     breaks = scales::pretty_breaks(6),

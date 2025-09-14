@@ -1,10 +1,6 @@
 # # source: https://www.r-bloggers.com/building-a-column-selecter/
 # #
 # SR_select_variables_interactively <- function(df, n = 100) {
-#   # load some libraries
-#   # pacman::p_load(shiny, miniUI, dplyr, DT, rstudioapi)
-#   #
-#   # return_dplyr_code <- match.arg(return_dplyr_code)
 #   stopifnot(is.data.frame(df))
 #   df_head <- utils::head(df, n)
 #   #
