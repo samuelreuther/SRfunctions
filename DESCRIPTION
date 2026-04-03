@@ -1,6 +1,6 @@
 Package: SRfunctions
 Title: Several utilities and functions
-Version: 0.5.0
+Version: 0.6.0
 Authors@R: 
     person(given = "Samuel",
            family = "Reuther",
@@ -14,7 +14,8 @@ Suggests:
     testthat (>= 2.1.0),
     spelling,
     knitr,
-    rmarkdown
+    rmarkdown,
+    writexl
 Language: en-US
 Imports: 
     dplyr,
@@ -34,6 +35,10 @@ Imports:
     moments,
     stringi,
     Hmisc,
-    tibble
+    tibble,
+    usethis,
+    fs,
+    readxl,
+    compare
 VignetteBuilder: knitr
 RoxygenNote: 7.3.3

@@ -19,6 +19,6 @@ You can install the released version of SRfunctions from
 # install.packages("devtools")
 devtools::install_github("samuelreuther/SRfunctions")
 
-install.packages("/home/sandbox/sandbox/Libraries/SRfunctions_0.5.0.tar.gz",
+install.packages("/home/sandbox/sandbox/Libraries/SRfunctions_0.6.0.tar.gz",
                  repos = NULL, type = "source", dependencies = TRUE, build_vignettes = TRUE)
 ```
