@@ -10,7 +10,7 @@ test_that("1 year + 1 day (no leap year)", {
 
 test_that("NA", {
   expect_equal(SR_difftime_years(enddate = "2023-11-30", startdate = NA),
-               NA)
+               NA_real_)
 })
 
 test_that("several dates", {
