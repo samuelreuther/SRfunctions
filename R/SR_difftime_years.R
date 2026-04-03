@@ -18,28 +18,34 @@ SR_difftime_years <- function(enddate, startdate) {
   startdate <- as.Date(startdate)
   enddate   <- as.Date(enddate)
 
-  # Recycle to common length (handles scalar enddate with vector startdate, and vice versa)
-  n         <- max(length(startdate), length(enddate))
-  startdate <- rep_len(startdate, n)
-  enddate   <- rep_len(enddate, n)
-
-  # Result initialised to NA_real_; only non-NA pairs are computed (avoids sprintf(NA) quirks)
+  n      <- max(length(startdate), length(enddate))
   result <- rep(NA_real_, n)
-  ok     <- !is.na(startdate) & !is.na(enddate)
+
+  # ok: scalar enddate/startdate recycled naturally by R's & operator
+  ok <- !is.na(startdate) & !is.na(enddate)
   if (!any(ok)) return(result)
 
+  # Subset startdate to non-NA; keep enddate as scalar if it was scalar
+  # (scalar enddate is the common case: format() then makes only 1 strftime call)
   sd_ <- startdate[ok]
-  ed_ <- enddate[ok]
+  ed_ <- if (length(enddate) == 1L) enddate else enddate[ok]
 
-  negative <- sd_ > ed_
+  negative <- sd_ > ed_  # natural recycling when ed_ is scalar
 
-  # Swap for negative differences (integer representation, no copy of Date objects)
-  s    <- as.integer(sd_)
-  e    <- as.integer(ed_)
+  s_int <- as.integer(sd_)
+  e_int <- as.integer(ed_)  # stays length 1 when enddate is scalar
+
+  # Swap: expand e_int only when swaps are actually needed
   swap <- which(negative)
-  tmp  <- s[swap]; s[swap] <- e[swap]; e[swap] <- tmp
-  start_ <- structure(s, class = "Date")
-  end_   <- structure(e, class = "Date")
+  if (length(swap) > 0L) {
+    if (length(e_int) < length(s_int)) e_int <- rep_len(e_int, length(s_int))
+    tmp <- s_int[swap]; s_int[swap] <- e_int[swap]; e_int[swap] <- tmp
+  }
+  # When enddate is scalar and no swaps: e_int stays length 1 →
+  # format(end_, ...) makes exactly 1 strftime call; all arithmetic below recycles it
+
+  start_ <- structure(s_int, class = "Date")
+  end_   <- structure(e_int, class = "Date")
 
   # Year/month/day via format() — single C-level strftime call, avoids POSIXlt construction
   fmt_s <- format(start_, "%Y%m%d"); fmt_e <- format(end_, "%Y%m%d")
@@ -65,8 +71,9 @@ SR_difftime_years <- function(enddate, startdate) {
   start__      <- as.Date(sprintf("%04d%02d%02d", ann_yr, ann_mo, ann_d), format = "%Y%m%d")
 
   # Fractional year — same leap-year logic as original
+  # e_int is scalar (recycled by R) when enddate was scalar and no swaps occurred
   days_in_year <- 365L + as.integer(is_leap(ann_yr) | is_leap(ey))
-  year_frac    <- (e - as.integer(start__)) / days_in_year
+  year_frac    <- (e_int - as.integer(start__)) / days_in_year
 
   r           <- years_ + year_frac
   r[negative] <- -r[negative]
