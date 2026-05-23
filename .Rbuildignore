@@ -3,3 +3,5 @@
 ^LICENSE\.md$
 ^README\.Rmd$
 ^vignettes/.*\.qmd$
+^\.positai$
+^\.claude$
