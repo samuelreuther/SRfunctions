@@ -5,3 +5,4 @@
 ^vignettes/.*\.qmd$
 ^\.positai$
 ^\.claude$
+^CLAUDE\.md$
