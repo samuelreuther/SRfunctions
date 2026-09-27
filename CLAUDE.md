@@ -40,7 +40,7 @@ spelling::spell_check_package()
 | Feature engineering | `SR_feat_eng_numeric`, `SR_feat_eng_factors`, `SR_feat_eng_date`, `SR_feat_eng_rows` |
 | NA imputation | `SR_replace_NA_median`, `SR_replace_NA_modus`, `SR_omit_non_regular_values` |
 | Visualization | `SR_univariate_analysis`, `SR_plot_*`, `SR_NA_plot`, `SR_correlation_plot`, `SR_mosaicplot` |
-| Utilities | `SR_backup_files`, `SR_join_check`, `SR_view`, `SR_memory_usage`, `SR_open_github`, `SR_clean_sandbox`, `SR_rm_from_env`, `SR_update_gitignore`, `SR_compare_excel_files` |
+| Utilities | `SR_backup_files`, `SR_join_check`, `SR_view`, `SR_memory_usage`, `SR_open_github`, `SR_open_folder_in_pane`, `SR_open_folder_in_explorer`, `SR_clean_sandbox`, `SR_rm_from_env`, `SR_update_gitignore`, `SR_compare_excel_files` |
 
 ### Key Design Patterns
 
